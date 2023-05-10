@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>ShopWear.com</title>
+        <title>ShopNation.com</title>
         <meta name="description" content="ShopWear.com - shop the cloth" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -22,7 +22,7 @@ export default function Home() {
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Shop anything with ShopWear.com</h1>
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">Shop anything with ShopNation.com</h1>
             <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Shop whatever you want! you want hoodies? you want t-shirts?</p>
           </div>
           <div className="flex flex-wrap -m-4">
