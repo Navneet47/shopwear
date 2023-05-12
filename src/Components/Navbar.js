@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef } from 'react';
 import { AiOutlineShoppingCart, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
-import { MdShoppingCartCheckout, MdAccountCircle } from 'react-icons/md';
+import { MdShoppingCartCheckout, MdAccountCircle, MdShoppingCart  } from 'react-icons/md';
 
 function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
   const cartRef = useRef();
@@ -26,20 +26,20 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
       </div>
       <div className="navbar">
         <ul className='flex items-center space-x-4 font-bold md:text-md'>
-          <Link href={"/tshirts"}><li>T-shirts</li></Link>
-          <Link href={"/hoodies"}><li>Hoodies</li></Link>
-          <Link href={"/mugs"}><li>Mugs</li></Link>
-          <Link href={"/stickers"}><li>Stickers</li></Link>
+          <Link href={"/tshirts"}><li className='hover:text-orange-600'>T-shirts</li></Link>
+          <Link href={"/hoodies"}><li className='hover:text-orange-600'>Hoodies</li></Link>
+          <Link href={"/mugs"}><li className='hover:text-orange-600'>Mugs</li></Link>
+          <Link href={"/stickers"}><li className='hover:text-orange-600'>Stickers</li></Link>
         </ul>
       </div>
       <div className="sideCart absolute right-0 top-6 mx-5 flex">
        <Link href={"/login"}>
-        <MdAccountCircle className='text-xl md:text-2xl mx-2 cursor-pointer' />
+        <MdAccountCircle className='text-xl md:text-2xl mx-2 cursor-pointer hover:text-orange-600' />
        </Link>
-        <AiOutlineShoppingCart onClick={toggleCart} className='text-xl md:text-2xl cursor-pointer' />
+        <AiOutlineShoppingCart onClick={toggleCart} className='text-xl md:text-2xl cursor-pointer hover:text-orange-600' />
       </div>
 
-      <div ref={cartRef} className={`w-72 sideCart absolute top-0 right-0 bg-orange-100 py-10 px-8 transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div ref={cartRef} className={`w-72 sideCart overflow-y-scroll absolute top-0 right-0 bg-orange-100 py-10 px-8 transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'}`}>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-2 right-2 text-orange-500 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>
@@ -47,7 +47,7 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
           {Object.keys(cart).map((k) => {
             return <li key={k}>
               <div className="item flex my-5">
-                <div className='w-2/3'>{cart[k].name}</div>
+                <div className='w-2/3'>{cart[k].name}({cart[k].size}/{cart[k].variant})</div>
                 <div className=' font-semibold flex justify-center item-center w-1/3 text-lg'><AiOutlineMinusCircle onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /><span className='mx-2 text-sm'>{cart[k].qty}</span><AiOutlinePlusCircle onClick={() => { addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /></div>
               </div>
             </li>
@@ -59,7 +59,7 @@ function Navbar({ cart, addToCart, removeFromCart, clearCart, subTotal }) {
           <Link href={"/checkout"}>
             <button className="flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md"><MdShoppingCartCheckout className='m-1 mt-1' />Checkout</button>
           </Link>
-          <button onClick={clearCart} className="flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Clear Cart</button>
+          <button onClick={clearCart} className="flex mr-2 text-white bg-orange-500 border-0 py-2 px-2 focus:outline-none hover:bg-orange-600 rounded text-md">Clear <MdShoppingCart className='ml-1 mt-1'/></button>
         </div>
       </div>
     </div>

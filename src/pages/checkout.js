@@ -1,8 +1,6 @@
 import React from 'react'
-import Link from 'next/link';
 import {AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import {BsFillBagCheckFill} from 'react-icons/bs';
-import { MdShoppingCartCheckout } from 'react-icons/md';
 
 function Checkout({ cart, addToCart, removeFromCart, subTotal }) {
   return (
@@ -66,7 +64,7 @@ function Checkout({ cart, addToCart, removeFromCart, subTotal }) {
           {Object.keys(cart).map((k) => {
             return <li key={k}>
               <div className="item flex my-5">
-                <div className='font-semibold'>{cart[k].name}</div>
+                <div className='font-semibold'>{cart[k].name}({cart[k].size}/{cart[k].variant})</div>
                 <div className=' font-semibold flex justify-center item-center w-1/3 text-lg'><AiOutlineMinusCircle onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /><span className='mx-2 text-sm'>{cart[k].qty}</span><AiOutlinePlusCircle onClick={() => { addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /></div>
               </div>
             </li>
