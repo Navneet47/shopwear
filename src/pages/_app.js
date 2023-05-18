@@ -2,14 +2,25 @@ import Footer from '@/Components/Footer'
 import Navbar from '@/Components/Navbar'
 import '@/styles/globals.css'
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import LoadingBar from 'react-top-loading-bar';
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const router = useRouter();
-
+  const [user, setUser] = useState({value:null});
+  const [key, setKey] = useState(0);
+  const [progress, setProgress] = useState(0);
+  
+  
   useEffect(() => {
+    router.events.on('routeChangeStart', ()=>{
+      setProgress(40);
+    })
+    router.events.on('routeChangeComplete', ()=>{
+      setProgress(100);
+    })
     try{
 
       if(localStorage.getItem("cart")){
@@ -21,8 +32,14 @@ export default function App({ Component, pageProps }) {
       console.error(err);
       localStorage.clear();
     }
-  }, [])
+    const token = localStorage.getItem('token');
+    if(token){
+     setUser({value: token});
+     setKey(Math.random())
+    }
+  }, [router.query])
   
+ 
 
   const saveCart = (myCart)=>{
     localStorage.setItem("cart", JSON.stringify(myCart));
@@ -57,9 +74,15 @@ export default function App({ Component, pageProps }) {
   }
 
   const clearCart = ()=>{
-    console.log("Cart cleared");
     setCart({});
     saveCart({});
+  }
+
+  const logOut = ()=>{
+    localStorage.removeItem('token');
+    setKey(Math.random());
+    setUser({value:null});
+    router.push('/');
   }
 
   const buyNow = (itemCode, qty, price, name, size, variant)=>{
@@ -69,7 +92,14 @@ export default function App({ Component, pageProps }) {
     router.push("/checkout");
   }
 
-  return <><Navbar key={subTotal} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}/>
+  return <>
+        <LoadingBar
+        color='#ffa500'
+        progress={progress}
+        waitingTime={500}
+        onLoaderFinished={() => setProgress(0)}
+      />
+  <Navbar logout={logOut} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}/>
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
     <Footer />
   </>

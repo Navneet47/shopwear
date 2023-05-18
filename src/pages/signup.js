@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 function Signup() {
 
@@ -10,11 +11,17 @@ function Signup() {
     email: "",
     password: ""
   })
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      router.push('/');
+    }
+   },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo({ ...userInfo, [name]: value });
-    console.log(userInfo);
   }
 
   const handleSubmit = async (e) => {
@@ -36,7 +43,7 @@ function Signup() {
     });
     toast.success('Account Created Successfully', {
       position: "top-left",
-      autoClose: 3000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -45,15 +52,15 @@ function Signup() {
       theme: "light",
       });
       setTimeout(()=>{
-        window.location.replace("http://localhost:3000/login")
-      },4000);
+        router.push("http://localhost:3000/login")
+      },2500);
   }
 
 
 
   return (<div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <ToastContainer
-      position="top-right"
+      position="top-left"
       autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}

@@ -19,7 +19,7 @@ const handler = async (req, res) => {
             })
             await pro.save();
         }
-        res.status(200).json({SUCCESS: "Product Added Successfully"})
+        res.status(200).json({success: "Product Added Successfully"})
     } else {
         res.status(400).json({ error: "This method is not allowed" })
 
