@@ -27,7 +27,7 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = userInfo;
-    let res = await fetch("http://localhost:3000/api/signup", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ function Signup() {
       theme: "light",
       });
       setTimeout(()=>{
-        router.push("http://localhost:3000/login")
+        router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)
       },2500);
   }
 
@@ -72,7 +72,7 @@ function Signup() {
       theme="light"
     />
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=600" alt="Your Company" />
+      <img className="mx-auto h-10 w-auto" src="home-image.png" alt="ShopNation" />
       <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign up for an account</h2>
     </div>
 

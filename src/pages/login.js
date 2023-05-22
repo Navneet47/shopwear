@@ -29,7 +29,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = userInfo;
-    let res = await fetch("http://localhost:3000/api/login", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ function Login() {
         password: ""
       });
           setTimeout(() => {
-      router.push("http://localhost:3000")
+      router.push(process.env.NEXT_PUBLIC_HOST)
     }, 1500);
     }else{
       toast.error(response.error, {
@@ -85,7 +85,7 @@ function Login() {
       theme="light"
     />
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=orange&shade=600" alt="Your Company" />
+      <img className="mx-auto h-10 w-auto" src="home-image.png" alt="ShopNation" />
       <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Login to your account</h2>
     </div>
 

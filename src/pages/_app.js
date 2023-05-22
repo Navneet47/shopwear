@@ -99,7 +99,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={500}
         onLoaderFinished={() => setProgress(0)}
       />
-  <Navbar logout={logOut} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}/>
+<Navbar logout={logOut} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}/>
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
     <Footer />
   </>
