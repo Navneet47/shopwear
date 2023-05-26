@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import mongoose from 'mongoose';
 import Order from '../../models/Order';
+import { useRouter } from 'next/router';
 
-function MyOrder({order}) {
+function MyOrder({order, clearCart}) {
   const products = order.products;
+  const router = useRouter();
+  useEffect(()=>{
+    if(router.query.clearCart == 1){
+      clearCart();
+    }
+  }, [])
+
   return <section className="text-gray-600 body-font overflow-hidden">
     <div className="container px-5 py-24 mx-auto">
       <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -15,7 +23,7 @@ function MyOrder({order}) {
           <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Quantity</a>
           <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Total</a>
         </div>
-          <p className="leading-relaxed mb-4">Yayy! Your order has been successfully placed. Your Payment status is: {order.status}</p>
+          <p className="leading-relaxed mb-4">Yayy! Your order has been successfully placed.</p>
           <p className="leading-relaxed mb-4">Your Payment status is: <span className='font-semibold'>{order.status}</span></p>
 
           {Object.keys(products).map((item)=>{

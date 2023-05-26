@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 import { AiOutlineShoppingCart, AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
-import { MdShoppingCartCheckout, MdAccountCircle, MdShoppingCart } from 'react-icons/md';
+import { MdShoppingCartCheckout, MdAccountCircle } from 'react-icons/md';
 
 function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subTotal }) {
   const cartRef = useRef();
@@ -80,9 +80,9 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
         <div className='total font-bold my-2'>Subtotal: ₹{subTotal}</div>
         <div className='flex'>
           <Link href={"/checkout"}>
-            <button className="flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md"><MdShoppingCartCheckout className='m-1 mt-1' />Checkout</button>
+            <button disabled={Object.keys(cart).length === 0} className=" disabled:bg-orange-300  flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md"><MdShoppingCartCheckout className='m-1 mt-1' />Checkout</button>
           </Link>
-          <button onClick={clearCart} className="flex mr-2 text-white bg-orange-500 border-0 py-2 px-2 focus:outline-none hover:bg-orange-600 rounded text-md">Clear <MdShoppingCart className='ml-1 mt-1' /></button>
+          <button disabled={Object.keys(cart).length === 0} onClick={clearCart} className="disabled:bg-orange-300 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Clear Cart</button>
         </div>
       </div>
     </div>

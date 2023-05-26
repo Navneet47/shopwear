@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 import Head from 'next/head';
@@ -6,8 +6,9 @@ import Script from 'next/script';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Router from 'next/router';
 
-function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
+function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, email }) {
   const [userDetails, setDetails] = useState({
     name: '',
     email: '',
@@ -18,6 +19,16 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
   const [pincode, setPincode] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
+  const [user, setUser] = useState();
+
+  useEffect(()=>{
+
+    const user = JSON.parse(localStorage.getItem('myuser'));
+   if(user.token){
+    setUser(user)
+     setDetails({...userDetails, email:user.email})
+   }
+  }, [])
 
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -63,7 +74,7 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
         amount: data.amount,
         order_id: data.id,
         description: "Thank You For Ordering",
-        // callback_url: `${process.env.NEXT_PUBLIC_HOST}/api/posttransaction`,
+        // callback_url: `${process.env.NEXT_PUBLIC_HOST}/api/verify`,
         handler: async function (response) {
           alert("Payment Successfull");
           const data = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/verify`, {
@@ -76,18 +87,14 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
 
           data["oid"] = oid;
 
-          await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/posttransaction`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/posttransaction`, {
             method: 'POST',
             header: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-          })
-        },
-        prefill: {
-          name: userDetails.name,
-          email: userDetails.email,
-          contact: userDetails.phone
+          }).then((t)=>t.json())
+          Router.push(`/order?clearCart=1&id=${res.id}`)
         },
       };
       const paymentObject = new Razorpay(options);
@@ -98,6 +105,7 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
         alert(response.error.description);
       });
     } else {
+      clearCart();
       toast.error(data.error, {
         position: "top-left",
         autoClose: 3000,
@@ -210,7 +218,8 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-            <input type="email" id="email" name="email" onChange={handleChange} value={userDetails.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+           {user && user.value ? <input readOnly type="email" id="email" name="email" value={user.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />:
+            <input type="email" id="email" name="email" onChange={handleChange} value={userDetails.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />}
           </div>
         </div>
       </div>
@@ -224,7 +233,7 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="phone" className="leading-7 text-sm text-gray-600">Phone</label>
-            <input type="tel" id="phone" name="phone" onChange={handleChange} value={userDetails.phone} pattern="[0-9]{10}" maxLength={10} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input placeholder='Your 10 Digit Phone Number' type="tel" id="phone" name="phone" onChange={handleChange} value={userDetails.phone} pattern="[0-9]{10}" maxLength={10} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
         </div>
         <div className="px-2 w-1/2">
@@ -243,7 +252,7 @@ function Checkout({ cart, addToCart, removeFromCart, oid, subTotal, email }) {
         </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">City</label>
+            <label htmlFor="city" className="leading-7 text-sm text-gray-600">District</label>
             <input onChange={handleChange} value={city} type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
         </div>

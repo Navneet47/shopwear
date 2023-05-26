@@ -11,20 +11,41 @@ async function handler(req, res) {
 
         // Check if cart is tempered
           let product, sumTotal = 0;
+          if(bodyDetails.products.subTotal <= 0){
+            res.status(200).json({success:false, error: "Cart empty! Please build your cart and tr again"})
+            return
+         }
         for(let item in bodyDetails.products.cart){
-             let product = await Product.findOne({slug: item})
-             sumTotal += bodyDetails.products.cart[item].price * bodyDetails.products.cart[item].qty 
+            sumTotal += bodyDetails.products.cart[item].price * bodyDetails.products.cart[item].qty 
+             product = await Product.findOne({slug: item})
+             //check if the cart items are out of stock
+             if(product.availableQty < bodyDetails.products.cart[item].qty){
+                res.status(200).json({success:false, error: "Some items in your cart went out of stock and have been removed from your cart, Please try again"})
+                return
+             }
              if(product.price != bodyDetails.products.cart[item].price){
-                res.status(400).json({success:false, error: "The Price of some items in your cart have changed. Please try again!"})
+                res.status(200).json({success:false, error: "The Price of some items in your cart have changed. Please try again!"})
                 return
             }
         }
         
         if(sumTotal !== bodyDetails.products.subTotal){
-            res.status(400).json({success:false, error: "The Price of some items in your cart have changed. Please try again!"})
+            res.status(200).json({success:false, error: "The Price of some items in your cart have changed. Please try again!"})
             return
         }
 
+        //check if details are valid
+       if(bodyDetails.products.phone.length !== 10 || !Number.isInteger(bodyDetails.products.phone)){
+        res.status(200).json({success:false, error: "Please enter your 10 digit phone number"})
+        return
+       }
+       if(bodyDetails.products.pincode.length !== 6 || !Number.isInteger(bodyDetails.products.pincode)){
+        res.status(200).json({success:false, error: "Please enter your 6 digit pincode"})
+        return
+       }
+
+
+// Initialize an order corresponding to this order id
         let order = new Order({
             email: bodyDetails.products.email,
             orderId: bodyDetails.products.oid,
