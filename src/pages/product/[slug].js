@@ -22,7 +22,7 @@ function Slug({ buyNow, addToCart, product, variants }) {
   const checkService = async () => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`)
     let pinJson = await pins.json()
-    if (pinJson.includes(parseInt(pinToDeliver))) {
+    if (Object.keys(pinJson).includes(pinToDeliver)) {
       setDelivery({ pin: pinToDeliver, service: true })
       toast.success('Your Pincode is Serviceable!', {
         position: "top-right",

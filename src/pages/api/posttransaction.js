@@ -1,19 +1,22 @@
 import Order from "../../../models/Order";
 import connectDb from "../../../middleware/mongoose";
 
+
 async function handler(req,res){
-    // Validate paytm checksum
     
     //update status into Orders table after checking the transaction status
-    if(req.body.STATUS == 'TXN_SUCCESS'){
-        await Order.findOneAndUpdate({orderId: req.body.ORDERID}, {status:'Paid'}, {paymentInfo: JSON.stringify(req.body)});
-    } else if(req.body.STATUS == 'PENDING'){
-        await Order.findOneAndUpdate({orderId: req.body.ORDERID}, {status:'Pending'}, {paymentInfo: JSON.stringify(req.body)});
+    const details = JSON.parse(req.body);
+     const {status, razorpay_payment_id, oid} = details;
+
+    if(status == 'SUCCESS'){
+        await Order.findOneAndUpdate({orderId: oid}, {status:'Paid'});
+        await Order.findOneAndUpdate({orderId: oid}, {paymentInfo:razorpay_payment_id});
+    } else{
+        await Order.findOneAndUpdate({orderId: oid}, {status:'Pending'}, {paymentInfo: razorpay_payment_id});
     }
     // Initiate shipping
-    
+    res.redirect('/order',200)
     // Redirect user to the order confirmation page 
-       res.redirect('/order',200);
 
     // res.status(200).json({body:req.body});
 }
