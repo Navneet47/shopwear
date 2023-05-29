@@ -1,4 +1,3 @@
-// const https = require('https');
 import connectDb from '../../../middleware/mongoose';
 import Order from '../../../models/Order';
 import Razorpay from 'razorpay';
@@ -35,11 +34,11 @@ async function handler(req, res) {
         }
 
         //check if details are valid
-       if(bodyDetails.products.phone.length !== 10 || !Number.isInteger(bodyDetails.products.phone)){
+       if(bodyDetails.products.phone.length !== 10 || !Number.isInteger(Number(bodyDetails.products.phone))){
         res.status(200).json({success:false, error: "Please enter your 10 digit phone number"})
         return
        }
-       if(bodyDetails.products.pincode.length !== 6 || !Number.isInteger(bodyDetails.products.pincode)){
+       if(bodyDetails.products.pincode.length !== 6 || !Number.isInteger(Number(bodyDetails.products.pincode))){
         res.status(200).json({success:false, error: "Please enter your 6 digit pincode"})
         return
        }
@@ -92,6 +91,11 @@ async function handler(req, res) {
     }
     
     export default connectDb(handler);
+
+
+// Paytm function
+// const https = require('https');
+
         // return res.status(200).json(options);
 
         // //    Insert an entry in the orders table with status as pending

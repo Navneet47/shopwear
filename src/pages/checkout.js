@@ -30,6 +30,8 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
    }
   }, [])
 
+  // handling billing details
+
   const handleChange = async (e) => {
     const { name, value } = e.target;
     setDetails({ ...userDetails, [name]: value });
@@ -54,6 +56,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
     }
   }
 
+  //handling payment
   async function initiatePayment() {
     let oid = Math.floor(Math.random() * Date.now());
     const products = { cart, subTotal, oid, email: userDetails.email, name: userDetails.name, address: userDetails.address, pincode: userDetails.pincode, phone: userDetails.phone };
@@ -95,6 +98,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
             body: JSON.stringify(data)
           }).then((t)=>t.json())
           Router.push(`/order?clearCart=1&id=${res.id}`)
+          localStorage.removeItem("orderId");
         },
       };
       const paymentObject = new Razorpay(options);
@@ -118,71 +122,6 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
         });
     }
   }
-
-  //  async function initiatePayment() {
-  //     let oid = Math.floor(Math.random() * Date.now())
-  //     //Get a transaction token
-  //     const data = { cart, subTotal, oid, email: userDetails.email, name: userDetails.name, address: userDetails.address, pincode: userDetails.pincode, phone: userDetails.phone};
-  //     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,{
-  //       method: 'POST',
-  //       headers:{
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     })
-  //     let txnRes = await a.json()
-  //      console.log(txnRes);
-  //      let txnToken = txnRes.txnToken;
-
-
-  //     let config = {
-  //       "root": "",
-  //       "style": {
-  //         "bodyColor": "",
-  //         "themeBackgroundColor": "",
-  //         "themeColor": "",
-  //         "headerBackgroundColor": "",
-  //         "headerColor": "",
-  //         "errorColor": "",
-  //         "successColor": ""
-  //       },
-  //       "flow": "DEFAULT",
-  //       "data": {
-  //         "orderId": oid,
-  //         "token": txnToken,
-  //         "tokenType": "TXN_TOKEN",
-  //         "amount": subTotal,
-  //         "userDetail": {
-  //           "mobileNumber": "",
-  //           "name": ""
-  //         }
-  //       },
-  //       "merchant": {
-  //         "mid": "",
-  //         "name": "",
-  //         "redirect": true
-  //       },
-  //       "labels": {},
-  //       "payMode": {
-  //         "labels": {},
-  //         "filter": [],
-  //         "order": []
-  //       },
-  //       "handler": {
-  //         "notifyMerchant": function (eventName, data) {
-  //           console.log("notifyMerchant handler function called");
-  //           console.log("eventName =>", eventName);
-  //           console.log("data => ", data);
-  //         }
-  //       }
-  //     };
-
-  //         window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
-  //           window.Paytm.CheckoutJS.invoke();
-  //         }).catch(function (error) {
-  //           console.log("error => ", error);
-  //         })
-  //   }
 
   return (
     <div className='container px-2 sm:m-auto'>
@@ -287,4 +226,70 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
   )
 }
 
-export default Checkout
+export default Checkout;
+
+//Paytm integration
+ //  async function initiatePayment() {
+  //     let oid = Math.floor(Math.random() * Date.now())
+  //     //Get a transaction token
+  //     const data = { cart, subTotal, oid, email: userDetails.email, name: userDetails.name, address: userDetails.address, pincode: userDetails.pincode, phone: userDetails.phone};
+  //     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,{
+  //       method: 'POST',
+  //       headers:{
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(data),
+  //     })
+  //     let txnRes = await a.json()
+  //      console.log(txnRes);
+  //      let txnToken = txnRes.txnToken;
+
+
+  //     let config = {
+  //       "root": "",
+  //       "style": {
+  //         "bodyColor": "",
+  //         "themeBackgroundColor": "",
+  //         "themeColor": "",
+  //         "headerBackgroundColor": "",
+  //         "headerColor": "",
+  //         "errorColor": "",
+  //         "successColor": ""
+  //       },
+  //       "flow": "DEFAULT",
+  //       "data": {
+  //         "orderId": oid,
+  //         "token": txnToken,
+  //         "tokenType": "TXN_TOKEN",
+  //         "amount": subTotal,
+  //         "userDetail": {
+  //           "mobileNumber": "",
+  //           "name": ""
+  //         }
+  //       },
+  //       "merchant": {
+  //         "mid": "",
+  //         "name": "",
+  //         "redirect": true
+  //       },
+  //       "labels": {},
+  //       "payMode": {
+  //         "labels": {},
+  //         "filter": [],
+  //         "order": []
+  //       },
+  //       "handler": {
+  //         "notifyMerchant": function (eventName, data) {
+  //           console.log("notifyMerchant handler function called");
+  //           console.log("eventName =>", eventName);
+  //           console.log("data => ", data);
+  //         }
+  //       }
+  //     };
+
+  //         window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
+  //           window.Paytm.CheckoutJS.invoke();
+  //         }).catch(function (error) {
+  //           console.log("error => ", error);
+  //         })
+  //   }

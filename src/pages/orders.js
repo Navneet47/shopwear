@@ -45,10 +45,13 @@ function Orders() {
                   Email
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Details
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Price
+                  Amount
                 </th>
               </tr>
             </thead>
@@ -61,8 +64,12 @@ function Orders() {
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap light:text-white">
                   {item.email}
                 </th>
-                <td className="px-6 py-4">
-                  <Link href={'/order?id=' + item._id}>Details</Link>
+                <th scope="row" className="px-6 py-4">
+                  {item.status}
+                </th>
+                <td className="px-6 py-4 hover:text-orange-500">
+                  <Link href={'/order?id=' + item._id}>
+                    Details</Link>
                 </td>
                 <td className="px-6 py-4">
                 ₹{item.amount}

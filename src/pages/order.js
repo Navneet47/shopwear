@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import mongoose from 'mongoose';
 import Order from '../../models/Order';
 import { useRouter } from 'next/router';
@@ -6,7 +6,10 @@ import { useRouter } from 'next/router';
 function MyOrder({order, clearCart}) {
   const products = order.products;
   const router = useRouter();
+  const [date, setDate] = useState();
   useEffect(()=>{
+    const d = new Date(order.createdAt);
+    setDate(d)
     if(router.query.clearCart == 1){
       clearCart();
     }
@@ -24,8 +27,7 @@ function MyOrder({order, clearCart}) {
           <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Total</a>
         </div>
           <p className="leading-relaxed mb-4">Yayy! Your order has been successfully placed.</p>
-          <p className="leading-relaxed mb-4">Your Payment status is: <span className='font-semibold'>{order.status}</span></p>
-
+          <p className="leading-relaxed mb-4">Order placed on: {date && date.toLocaleString("en-IN",{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
           {Object.keys(products).map((item)=>{
             
           return <div key={item} className="flex border-t border-gray-200 py-2">
