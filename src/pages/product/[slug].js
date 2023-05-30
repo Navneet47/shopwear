@@ -19,8 +19,8 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
   const [color, setColor] = useState();
   const [size, setSize] = useState();
 
-  useEffect(()=>{
-    if(!error){
+  useEffect(() => {
+    if (!error) {
       setColor(product.color)
       setSize(product.size)
     }
@@ -46,7 +46,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     } else {
       setDelivery({ pin: pinToDeliver, service: false })
       toast.error('Sorry, Pincode not serviceable!', {
@@ -58,7 +58,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   }
 
@@ -68,7 +68,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
     router.push(url)
   }
 
-  if(error == 404){
+  if (error == 404) {
     return <Error statusCode={404} />
   }
 
@@ -163,10 +163,21 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
               </div>
             </div>
             <div className="flex">
-              {product.availableQty>0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
-              {product.availableQty<=0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
-              <button disabled={product.availableQty<=0} onClick={() => { addToCart(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-8 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Add to Cart</button>
-              <button disabled={product.availableQty<=0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
+              {product.availableQty > 0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
+              {product.availableQty <= 0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
+              <button disabled={product.availableQty <= 0} onClick={() => {
+                addToCart(product.slug, 1, product.price, product.title, product.size, product.color);  toast.success('Item added to cart', {
+                  position: "top-center",
+                  autoClose: 2500,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }} className="flex ml-8 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Add to Cart</button>
+              <button disabled={product.availableQty <= 0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
               {/* <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
@@ -192,9 +203,9 @@ export async function getServerSideProps(context) {
     await mongoose.connect(process.env.MONGO_URI);
   }
   let product = await Product.findOne({ slug: context.query.slug })
-  if(product == null){
-    return{
-      props: {error: 404}
+  if (product == null) {
+    return {
+      props: { error: 404 }
     }
   }
   let variants = await Product.find({ title: product.title, category: product.category })
@@ -211,7 +222,7 @@ export async function getServerSideProps(context) {
 
 
   return {
-    props: {product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(colorSizeSlug)) }, // will be passed to the page component as props
+    props: { product: JSON.parse(JSON.stringify(product)), variants: JSON.parse(JSON.stringify(colorSizeSlug)) }, // will be passed to the page component as props
   };
 }
 

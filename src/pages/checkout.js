@@ -24,7 +24,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
   useEffect(()=>{
 
     const user = JSON.parse(localStorage.getItem('myuser'));
-   if(user.token){
+   if(user && user.token){
     setUser(user)
      setDetails({...userDetails, email:user.email})
    }
@@ -60,7 +60,6 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
   async function initiatePayment() {
     let oid = Math.floor(Math.random() * Date.now());
     const products = { cart, subTotal, oid, email: userDetails.email, name: userDetails.name, address: userDetails.address, pincode: userDetails.pincode, phone: userDetails.phone };
-    localStorage.setItem("orderId", oid);
     const data = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
       method: 'POST',
       header: {
@@ -105,11 +104,12 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
       paymentObject.open();
 
       paymentObject.on("payment.failed", function (response) {
-        alert(response.error.code);
         alert(response.error.description);
       });
     } else {
-      clearCart();
+      if(data.cartClear){
+        clearCart();
+      }
       toast.error(data.error, {
         position: "top-left",
         autoClose: 3000,
@@ -157,7 +157,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, oid, subTotal, em
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-           {user && user.value ? <input readOnly type="email" id="email" name="email" value={user.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />:
+           {user && user.token ? <input readOnly type="email" id="email" name="email" value={user.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />:
             <input type="email" id="email" name="email" onChange={handleChange} value={userDetails.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />}
           </div>
         </div>

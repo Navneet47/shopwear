@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const OrderSchema = new mongoose.Schema({
     email: {type: String, required: true},
     orderId: {type: String, required: true},
-    paymentInfo: {type: String, default: 'pay_id'},
+    paymentInfo: {type: Object, default: 'pay_id'},
     products: {type: Object, required: true},
     address: {type: String, required: true},
     amount: {type: Number, required: true},

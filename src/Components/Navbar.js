@@ -31,8 +31,8 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
 
   return (
     <>
-    {!sidebar && <span onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }} className='absolute right-10 top-4 z-30'>
-          {dropDown && <div className=" absolute right-5 top-5 py-4 px-5 w-32 z-30 bg-white shadow-lg border rounded-md">
+    {!sidebar && <span onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }} className='fixed right-10 top-4 z-30'>
+          {dropDown && <div className=" absolute right-5 top-5 py-4 px-5 w-32 z-30 bg-white shadow-lg border">
             <ul>
               <Link href={'/myaccount'}>
                 <li className='py-1 cursor-pointer hover:text-orange-600 text-sm font-bold'>My Account</li>
@@ -47,15 +47,16 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
           </div>}
       {user.value && <MdAccountCircle className='text-xl cursor-pointer md:text-2xl mx-2 hover:text-orange-600' />} 
         </span>}
-    <div className={`sticky flex flex-col md:flex-row justify-center md:justify-start items-center py-2 shadow-md border-b-2 top-0 bg-white z-10 ${!sidebar && 'overflow-hidden'}`}>
+
+    <div className={`flex flex-col md:flex-row justify-center md:justify-start items-center py-2 shadow-md border-b-2 sticky top-0 bg-white z-10 ${!sidebar && 'overflow-hidden'}`}>
       <div className="logo mr-auto md:mx-5">
         <Link href={"/"}>
           {/* <Image src="/home-image.png" alt="shop-logo" width={70} height={5} /> */}
-          <p className='text-orange-600 text-xl ml-3 mt-3 mb-3'>SHOPNATION</p>
+          <p className='text-orange-600 text-xl ml-3 pt-3 mb-3'>SHOPNATION</p>
         </Link>
       </div>
-      <div className="navbar">
-        <ul className='flex items-center space-x-4 font-bold md:text-md'>
+      <div className="nav">
+        <ul className='flex items-center space-x-6 font-bold md:text-md'>
           <Link href={"/tshirts"}><li className='hover:text-orange-600'>T-shirts</li></Link>
           <Link href={"/hoodies"}><li className='hover:text-orange-600'>Hoodies</li></Link>
           <Link href={"/mugs"}><li className='hover:text-orange-600'>Mugs</li></Link>
@@ -83,14 +84,14 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
           {Object.keys(cart).map((k) => {
             return <li key={k}>
               <div className="item flex my-5">
-                <div className='w-2/3'>{cart[k].name}({cart[k].size}/{cart[k].variant})</div>
+                <div className='w-2/3 font-semibold'>{cart[k].name}({cart[k].size}/{cart[k].variant})</div>
                 <div className=' font-semibold flex justify-center item-center w-1/3 text-lg'><AiOutlineMinusCircle onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /><span className='mx-2 text-sm'>{cart[k].qty}</span><AiOutlinePlusCircle onClick={() => { addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /></div>
               </div>
             </li>
           })
           }
         </ol>
-        <div className='total font-bold my-2'>Subtotal: ₹{subTotal}</div>
+        <div className='font-bold my-2'>Subtotal: ₹{subTotal}</div>
         <div className='flex'>
           <Link href={"/checkout"}>
             <button disabled={Object.keys(cart).length === 0} className=" disabled:bg-orange-300  flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Checkout</button>
