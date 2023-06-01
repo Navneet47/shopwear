@@ -76,7 +76,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
         <AiOutlineShoppingCart onClick={toggleCart} className='cursor-pointer text-xl md:text-2xl hover:text-orange-600' />
       </div>
 
-      <div ref={cartRef} className={`w-72 sideCart overflow-y-scroll absolute top-0 bg-orange-100 py-10 px-8 transition-all ${sidebar ? 'right-0' : '-right-96'}`}>
+      <div ref={cartRef} className={`w-72 sideCart overflow-y-scroll absolute top-0 border border-orange-300 bg-white  py-10 px-8 transition-all ${sidebar ? 'right-0' : '-right-96'}`}>
         <h2 className='font-bold text-xl text-center'>Shopping Cart</h2>
         <span onClick={toggleCart} className="absolute top-2 right-2 text-orange-500 cursor-pointer text-2xl"><AiOutlineCloseCircle /></span>
         <ol className='list-decimal font-semibold'>

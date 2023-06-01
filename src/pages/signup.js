@@ -35,25 +35,39 @@ function Signup() {
       body: JSON.stringify(data),
     })
     let response = await res.json();
-    
-    setUserInfo({
-      name: "",
-      email: "",
-      password: ""
-    });
-    toast.success('Account Created Successfully', {
-      position: "top-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      });
-      setTimeout(()=>{
-        router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)
-      },2500);
+    console.log(response);
+
+    if(!response.success){
+      toast.success("Email Already exists", {
+        position: "top-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+      } else {
+        setUserInfo({
+          name: "",
+          email: "",
+          password: ""
+        });
+        toast.success('Account Created Successfully', {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+          setTimeout(()=>{
+            router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)
+          },2500);
+    }
   }
 
 
@@ -72,7 +86,6 @@ function Signup() {
       theme="light"
     />
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img className="mx-auto h-10 w-auto" src="home-image.png" alt="ShopNation" />
       <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign up for an account</h2>
     </div>
 

@@ -83,6 +83,7 @@ export default function App({ Component, pageProps }) {
 
   const logOut = ()=>{
     localStorage.removeItem('myuser');
+    clearCart()
     setKey(Math.random());
     setUser({value:null});
     router.push('/');

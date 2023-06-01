@@ -57,6 +57,11 @@ async function handler(req, res) {
             email: bodyDetails.products.email,
             orderId: bodyDetails.products.oid,
             address: bodyDetails.products.address,
+            city: bodyDetails.products.city,
+            state: bodyDetails.products.state,
+            phone: bodyDetails.products.phone,
+            pincode: bodyDetails.products.pincode,
+            name: bodyDetails.products.name,
             amount: bodyDetails.products.subTotal,
             products: bodyDetails.products.cart,
         })
