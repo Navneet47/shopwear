@@ -1,48 +1,127 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 function Forgot() {
 
-  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [cpassword, setCpassword] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
-  
-  useEffect(()=>{
-    if(localStorage.getItem('token')){
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
       router.push('/');
     }
-   },[])
+  }, []);
 
-  return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>
-  </div>
+  const handleChange = (e)=>{
+       const {name,value} = e.target;
 
-  <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form className="space-y-6" action="#" method="POST">
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-        <div className="mt-2">
-          <input id="email" name="email" type="email" autoComplete="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus: outline-orange-500 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
+       if(name == 'email'){
+        setEmail(value);
+       }
+       
+       if(name == 'password'){
+        setPassword(value)
+       } else if (name == 'cpassword'){
+        setCpassword(value)
+       }
+
+  }
+
+  const resetPassword = async () => {
+    if (password == cpassword) {
+      let data = {
+        password,
+        sendMail: true
+      }
+      let req = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      let res = await req.json();
+      if (res.success) {
+        console.log('Password have been changed');
+      } else {
+        console.log('Error');
+      }
+    } else {
+      console.log('Password not matching');
+    }
+  }
+
+const sendResetEmail = async () => {
+  let data = {
+    email,
+    sendMail: true
+  }
+  let req = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  let res = await req.json();
+  if (res.success) {
+    console.log('Password reset Instruction have been sent to your email');
+  } else {
+    console.log('Error');
+  }
+}
+
+return (
+  <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>
+    </div>
+
+    {router.query.token && <div className="space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <div className="mt-2">
+            <input placeholder='Password' onChange={handleChange} id="password" name="password" type="password" value={password} autoComplete="password" required className=" p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus: outline-orange-500 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+          </div>
         </div>
-      </div>
+        <div>
+          <label htmlFor="cpassword" className="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+          <div className="mt-2">
+            <input placeholder='Confirm Password' onChange={handleChange} id="cpassword" name="cpassword" type="password" value={cpassword} autoComplete="password" required className=" p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus: outline-orange-500 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+          </div>
+        </div>
 
-      <div>
-        <button type="submit" className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Continue</button>
-      </div>
-    </form>
+        <div>
+          <button onClick={resetPassword} type="submit" className=" disabled:bg-slate-200 flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Reset</button>
+        </div>
+        {password && password == cpassword ? <span className='text-green-600'>Password matched </span> : <span className='text-red-600'>Password does not match </span> }
+    </div>}
+    {!router.query.token && <div className= "space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email</label>
+          <div className="mt-2">
+            <input placeholder='Email Address' onChange={handleChange} id="email" name="email" type="email" autoComplete="email" value={email} required className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus: outline-orange-500 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+          </div>
+        </div>
 
-    <p className="mt-10 text-center text-sm text-gray-500">
-      Know password?
-      <Link href={"/login"}>
-      <span className="font-semibold leading-6 text-orange-600 hover:text-orange-500"> Login</span>
-      </Link>
-    </p>
+        <div>
+          <button onClick={sendResetEmail} type="submit" className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Continue</button>
+        </div>
+
+      <p className="mt-10 text-center text-sm text-gray-500">
+        Remember password?
+        <Link href={"/login"}>
+          <span className="font-semibold leading-6 text-orange-600 hover:text-orange-500"> Login</span>
+        </Link>
+      </p>
+    </div>}
   </div>
-</div>
-  )
+)
 }
 
 export default Forgot;

@@ -1,44 +1,50 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
-// https://m.media-amazon.com/images/I/51PUMIBLvoL._UL1300_.jpg"
+import Image from "next/image";
 function tShirts({ products }) {
+    const color = ['red','blue','black','green','yellow','white','purple','brown','multi','pink'];
     return (
-        <div className="bg-white">
-            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-                <h2 className="sr-only">Products</h2>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                    {Object.keys(products).map((item) => {
-                        return <Link passHref={true} key={products[item]._id} href={`/product/${products[item].slug}`} className="group shadow-2xl">
-                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                                <img src={products[item].img} alt="T-shirt image" />
-                            </div>
-                            <h3 className="mt-4 text-sm text-gray-700 pl-2">T-Shirts</h3>
-                            <p className="mt-1 text-lg font-medium text-gray-900 pl-2">{products[item].title}</p>
-                            <p className="mt-1 text-md  text-gray-900 pl-2">₹{products[item].price}</p>
-                            <div className="mt-1 mb-2 text-md  text-gray-900 pl-2">
-                                {products[item].size.includes('S') && <span className="border border-gray-300 px-1 mx-1">S</span>}
-                                {products[item].size.includes('M') && <span className="border border-gray-300 px-1 mx-1">M</span>}
-                                {products[item].size.includes('L') && <span className="border border-gray-300 px-1 mx-1">L</span>}
-                                {products[item].size.includes('XL') && <span className="border border-gray-300 px-1 mx-1">XL</span>}
-                                {products[item].size.includes('XXL') && <span className="border border-gray-300 px-1 mx-1">XXL</span>}
-                            </div>
-                            <div className="mt-1 mb-2 text-md  text-gray-900 pl-2">
-                                {products[item].color.includes('red') && <button className="border-2 border-gray-300 ml-1 bg-red-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {products[item].color.includes('blue') && <button className="border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {products[item].color.includes('black') && <button className="border-2 border-gray-300 ml-1 bg-black rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {products[item].color.includes('green') && <button className="border-2 border-gray-300 ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {products[item].color.includes('yellow') && <button className="border-2 border-gray-300 ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                            </div>
-                        </Link>
-                    })}
-
-                    {/* <!-- More products... --> */}
-                </div>
-            </div>
+        <div>
+        <div className="flex flex-col mx-14 lg:mx-32">
+            <h1 className="font-semibold m-2 mb-4 text-2xl md:text-4xl text-center capitalize">Explore Our Tshirts Collection</h1>
+            <p className="text-sm font-medium dark:text-gray-400 mb-3">
+                Stay warm and stylish with the wide selection of Tshirts available at Shopnation.com. All of our Tshirts are made with high-quality materials and are designed to be comfortable and durable. Shop now and find the perfect Tshirts for you!</p>
         </div>
+
+        {/* // <!-- ✅ Grid Section - Starts Here 👇 --> */}
+        <section id="Projects"
+            className="w-fit min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+            {/* <!--   ✅ Product card 1 - Starts Here 👇 --> */}
+            {Object.keys(products).length === 0 && <p className="font-bold">Sorry all the T-shirts are currently out of stock. New stock coming soon. Stay Tuned!</p>}
+            {Object.keys(products).map((item) => {
+                return <Link passHref={true} key={products[item]._id} href={`/product/${products[item].slug}`}>
+                    <div className="w-72 bg-slate-100 shadow-md rounded-xl hover:shadow-xl">
+                            <Image width={500} height={160} src={products[item].img}
+                                alt="Tshirt image" className="h-90 w-72 object-cover rounded-t-xl" />
+                            <div className='mt-2 text-md  text-gray-900 pl-2'>
+                            {color.map((val)=>{
+                                if(products[item].color.includes(val)){
+                                    return <button key={val} className={`border-2 border-gray-300 ml-1 bg-${val}-500 rounded-full w-6 h-6 focus:outline-none`}></button>
+                                }
+                            })}
+                            </div>
+                            <div className="px-4 py-3 w-72">
+                                <span className="text-gray-400 mr-3 uppercase text-xs">Tshirt</span>
+                                <p className="text-lg font-bold text-black truncate block capitalize">{products[item].title.slice(0,30)}</p>
+                                <div className="flex items-center">
+                                    <p className="text-lg font-semibold text-black cursor-auto my-3">₹{products[item].salePrice ? products[item].salePrice : products[item].price}</p>
+                                    <del>
+                                        <p className={`text-sm ${products[item].salePrice ? "" : "hidden"} text-gray-600 cursor-auto ml-2`}>₹{products[item].salePrice && products[item].price}</p>
+                                    </del>
+                                </div>
+                            </div>
+                    </div>
+                </Link>
+            })}
+        </section>
+    </div>    
     );
 }
 

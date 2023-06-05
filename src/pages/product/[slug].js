@@ -7,7 +7,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Slug({ buyNow, addToCart, product, variants, error }) {
+function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
+  const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'multi', 'pink'];
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+
+
   const router = useRouter();
   const { slug } = router.query;
   const [pinToDeliver, setPin] = useState(0);
@@ -24,6 +28,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
       setColor(product.color)
       setSize(product.size)
     }
+    console.log(variants);
   }, [router.query])
 
 
@@ -73,7 +78,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
   }
 
   return <>
-    <section className="text-gray-600 body-font overflow-hidden">
+    <section className="text-gray-600 body-font overflow-hidden min-h-screen">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -143,12 +148,16 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
                 {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button onClick={() => { refreshVariant('green', size) }} className={`border-2 ${color === 'green' ? 'border-black' : 'border-gray-300'} ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
                 {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button onClick={() => { refreshVariant('black', size) }} className={`border-2 ${color === 'black' ? 'border-black' : 'border-gray-300'} ml-1 bg-black rounded-full w-6 h-6 focus:outline-none`}></button>}
                 {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button onClick={() => { refreshVariant('yellow', size) }} className={`border-2 ${color === 'yellow' ? 'border-black' : 'border-gray-300'} ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button onClick={() => { refreshVariant('purple', size) }} className={`border-2 ${color === 'purple' ? 'border-black' : 'border-gray-300'} ml-1 bg-purple-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                {Object.keys(variants).includes('brown') && Object.keys(variants['brown']).includes(size) && <button onClick={() => { refreshVariant('brown', size) }} className={`border-2 ${color === 'brown' ? 'border-black' : 'border-gray-300'} ml-1 bg-amber-900 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                {Object.keys(variants).includes('pink') && Object.keys(variants['pink']).includes(size) && <button onClick={() => { refreshVariant('pink', size) }} className={`border-2 ${color === 'pink' ? 'border-black' : 'border-gray-300'} ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
               </div>
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>
-                <div className="relative">
-                  <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10">
+                <div className="relative -z-10">
+                  <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className={`rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10`}>
                     {color && Object.keys(variants[color]).includes('S') && <option value={'S'}>S</option>}
+                    {color && Object.keys(variants[color]).includes('XS') && <option value={'XS'}>XS</option>}
                     {color && Object.keys(variants[color]).includes('M') && <option value={'M'}>M</option>}
                     {color && Object.keys(variants[color]).includes('L') && <option value={'L'}>L</option>}
                     {color && Object.keys(variants[color]).includes('XL') && <option value={'XL'}>XL</option>}
@@ -166,7 +175,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
               {product.availableQty > 0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
               {product.availableQty <= 0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
               <button disabled={product.availableQty <= 0} onClick={() => {
-                addToCart(product.slug, 1, product.price, product.title, product.size, product.color);  toast.success('Item added to cart', {
+                addToCart(product.slug, 1, product.price, product.title, product.size, product.color); toast.success('Item added to cart', {
                   position: "top-center",
                   autoClose: 2500,
                   hideProgressBar: false,

@@ -1,77 +1,75 @@
-import React from 'react'
-import Link from 'next/link'
-function stickers() {
-    // "https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg"
+import Link from "next/link";
+import React from "react";
+import Product from "../../models/Product";
+import mongoose from "mongoose";
+import Image from "next/image";
+// https://m.media-amazon.com/images/I/51PUMIBLvoL._UL1300_.jpg"
+function Stickers({ products }) {
     return (
-        <div className="bg-white">
-            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-                <h2 className="sr-only">Products</h2>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Olive drab green insulated bottle with flared screw lid and flat top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Person using a pen to cross a task off a productivity paper card." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-                    <Link href={"/product/the-catylyzer"} className="group shadow-lg">
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                            <img src="https://m.media-amazon.com/images/I/912vTYEybGL._SL1500_.jpg" alt="Hand holding black machined steel mechanical pencil with brass tip and top." className="h-full w-full object-cover object-center group-hover:opacity-75"/>
-                        </div>
-                        <h3 className="mt-4 text-sm text-gray-700">Hoodie</h3>
-                        <p className="mt-1 text-lg font-medium text-gray-900">₹499</p>
-                    </Link>
-
-                    {/* <!-- More products... --> */}
-                </div>
-            </div>
+        <div>
+        <div className="flex flex-col mx-14 lg:mx-32">
+            <h1 className="font-semibold m-2 mb-4 text-2xl md:text-4xl text-center capitalize">Explore Our Stickers Collection</h1>
+            <p className="text-sm font-medium dark:text-gray-400 mb-3 text-center">
+                Look cool and stylish with the wide selection of Stickers available at Shopnation.com. Shop now and find the perfect Stickers for you!</p>
         </div>
-    )
+
+        {/* // <!-- ✅ Grid Section - Starts Here 👇 --> */}
+        <section id="Projects"
+            className="w-fit min-h-screen mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+            {/* <!--   ✅ Product card 1 - Starts Here 👇 --> */}
+            {Object.keys(products).length === 0 && <p className="font-bold">Sorry all the Stickers are currently out of stock. New stock coming soon. Stay Tuned!</p>}
+            {Object.keys(products).map((item) => {
+                return <Link passHref={true} key={products[item]._id} href={`/product/${products[item].slug}`}>
+                    <div className="w-72 bg-slate-100 shadow-md rounded-xl hover:shadow-xl">
+                            <Image width={500} height={160} src={products[item].img}
+                                alt="Tshirt image" className="h-90 w-72 object-cover rounded-t-xl" />
+                            <div className="px-4 py-3 w-72">
+                                <span className="text-gray-400 mr-3 uppercase text-xs">Sticker</span>
+                                <p className="text-lg font-bold text-black truncate block capitalize">{products[item].title.slice(0,30)}</p>
+                                <div className="flex items-center">
+                                    <p className="text-lg font-semibold text-black cursor-auto my-3">₹{products[item].salePrice ? products[item].salePrice : products[item].price}</p>
+                                    <del>
+                                        <p className={`text-sm ${products[item].salePrice ? "" : "hidden"} text-gray-600 cursor-auto ml-2`}>₹{products[item].salePrice && products[item].price}</p>
+                                    </del>
+                                </div>
+                            </div>
+                    </div>
+                </Link>
+            })}
+        </section>
+    </div>    
+    );
 }
 
-export default stickers
+export async function getServerSideProps(context) {
+    if (!mongoose.connections[0].readyState) {
+        await mongoose.connect(process.env.MONGO_URI);
+    }
+    let products = await Product.find({ category: 'sticker' })
+    let sticker = {}
+    for (let item of products) {
+        if (item.title in sticker) {
+            if (!sticker[item.title].color.includes(item.color) && item.availableQty > 0) {
+                sticker[item.title].color.push(item.color)
+            }
+            if (!sticker[item.title].size.includes(item.size) && item.availableQty > 0) {
+                sticker[item.title].size.push(item.size)
+            }
+        } else {
+            sticker[item.title] = JSON.parse(JSON.stringify(item));
+            if (item.availableQty > 0) {
+                sticker[item.title].color = [item.color]
+                sticker[item.title].size = [item.size]
+            } else {
+                sticker[item.title].color = []
+                sticker[item.title].size = []
+            }
+        }
+    }
+
+    return {
+        props: { products: JSON.parse(JSON.stringify(sticker)) }, // will be passed to the page component as props
+    };
+}
+
+export default Stickers;

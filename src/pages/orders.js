@@ -34,7 +34,7 @@ function Orders() {
       </div>
       <div className='container min-h-screen border-solid border-4 mx-auto'>
 
-        <div className="relative overflow-x-auto">
+        <div className="relative -z-10 overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
               <tr>

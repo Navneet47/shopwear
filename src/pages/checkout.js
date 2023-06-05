@@ -156,7 +156,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
   }
 
   return (
-    <div className='container px-2 sm:m-auto'>
+    <div className='container px-2 sm:m-auto min-h-screen'>
       <ToastContainer
         position="top-left"
         autoClose={4000}
@@ -170,6 +170,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
         theme="light"
       />
       <Head>
+        <title>Checkout - Shopnation.com</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
       </Head>
       <Script
