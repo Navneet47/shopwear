@@ -15,7 +15,8 @@ function MyOrder({order, clearCart}) {
     }
   }, [])
 
-  return <section className="text-gray-600 body-font overflow-hidden min-h-screen">
+  return <main>
+  <section className="text-gray-600 body-font overflow-hidden min-h-screen">
     <div className="container px-5 py-24 mx-auto">
       <div className="lg:w-4/5 mx-auto flex flex-wrap">
         <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
@@ -26,28 +27,27 @@ function MyOrder({order, clearCart}) {
           <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Quantity</a>
           <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Total</a>
         </div>
-          <p className="leading-relaxed mb-4">Yayy! Your order has been successfully placed.</p>
+          <p className="leading-relaxed mb-4 text-lg font-semibold">Yayy! Your order has been successfully placed.</p>
           <p className="leading-relaxed mb-4">Order placed on: {date && date.toLocaleString("en-IN",{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
           {Object.keys(products).map((item)=>{
             
           return <div key={item} className="flex border-t border-gray-200 py-2">
             <span className="text-gray-500">{products[item].name}</span>
             <span className="m-auto text-gray-900">{products[item].qty}</span>
-            <span className="m-auto text-gray-900">₹{products[item].price} X {products[item].qty} = ₹{products[item].price * products[item].qty}</span>
+            <span className="m-auto text-gray-900">₹{products[item].price * products[item].qty}</span>
           </div>
           })
           }
           <div className="flex flex-col">
             <span className="title-font my-8 font-medium text-2xl text-gray-900">Subtotal: ₹{order.amount}</span>
-            <div className='my-6'>
-            <button className="flex mx-0 text-white bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-orange-600 rounded">Track Order</button>
-            </div>
+            <span className="title-font mb-8 font-medium text-2xl text-gray-900">Shipping : Free</span>
           </div>
         </div>
-        <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400" />
+        <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://img0.etsystatic.com/000/0/5235427/il_570xN.228060264.jpg" />
       </div>
     </div>
   </section>
+  </main>
 
 }
 

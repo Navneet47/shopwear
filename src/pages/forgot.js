@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function Forgot() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cpassword, setCpassword] = useState('');
-  const [disabled, setDisabled] = useState(true);
 
   const router = useRouter();
   useEffect(() => {
@@ -36,7 +38,8 @@ function Forgot() {
     if (password == cpassword) {
       let data = {
         password,
-        sendMail: true
+        sendMail: false,
+        token: router.query.token
       }
       let req = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
         method: 'POST',
@@ -47,12 +50,44 @@ function Forgot() {
       })
       let res = await req.json();
       if (res.success) {
-        console.log('Password have been changed');
+        toast.success("Password have been changed", {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+          setPassword('');
+          setCpassword('');
+          setTimeout(()=>{
+            router.push('/login');
+          },2000)
       } else {
-        console.log('Error');
+        toast.error("Error", {
+          position: "top-left",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
       }
     } else {
-      console.log('Password not matching');
+      toast.error("Password Not Matching", {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
   }
 
@@ -69,17 +104,50 @@ const sendResetEmail = async () => {
     body: JSON.stringify(data),
   })
   let res = await req.json();
+  console.log(res);
   if (res.success) {
-    console.log('Password reset Instruction have been sent to your email');
+    toast.success("Password reset Instruction have been sent to your email, If you don't find email, Please check Spam folder!", {
+      position: "top-left",
+      autoClose: 7000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
   } else {
-    console.log('Error');
+    toast.error("Error", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
   }
 }
 
+
 return (
   <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <ToastContainer
+        position="top-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>
+      {router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Reset Password</h2>}
+      {!router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>}
     </div>
 
     {router.query.token && <div className="space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

@@ -35,7 +35,6 @@ function Signup() {
       body: JSON.stringify(data),
     })
     let response = await res.json();
-    console.log(response);
 
     if(!response.success){
       toast.success("Email Already exists", {

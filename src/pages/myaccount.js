@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Head from 'next/head';
 
 const MyAccount = () => {
   const router = useRouter();
@@ -133,7 +134,7 @@ const MyAccount = () => {
   }
 
   return (
-    <div className='container mx-auto my-9'>
+    <div className='container mx-auto my-9 pb-10'>
        <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -146,7 +147,12 @@ const MyAccount = () => {
         pauseOnHover
         theme="light"
       />
-      <h1 className='text-3xl text-center font-bold'>Account Details</h1>
+            <Head>
+        <title>Myaccount - Shopnation.com</title>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+      </Head>
+      <h1 className='text-3xl text-center font-bold mb-10'>Account Details</h1>
+      <main>
       <div className="mx-auto flex my-2">
         <div className="px-2 w-1/2">
           <div className="mb-4">
@@ -178,14 +184,14 @@ const MyAccount = () => {
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="pincode" className="leading-7 text-sm text-gray-600">Pincode</label>
-            <input type="text" id="pincode" name="pincode" onChange={handleChange} value={pincode} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input maxLength={6} type="text" id="pincode" name="pincode" onChange={handleChange} value={pincode} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
         </div>
       </div>
       <button onClick={handleUserSubmit} className="m-2 mb-5 disabled:bg-orange-200 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Submit</button>
 
       <h2 className='text-xl font-semibold'>2. Change Password</h2>
-      <div className="mx-auto flex my-2">
+      <div className="mx-auto flex my-2 flex-wrap">
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
@@ -206,6 +212,7 @@ const MyAccount = () => {
         </div>
       </div>
       <button onClick={handlePasswordSubmit} className="m-2 disabled:bg-orange-200 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Change Password</button>
+      </main>
     </div>
   )
 }

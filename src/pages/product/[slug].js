@@ -1,17 +1,19 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Product from '../../../models/Product';
 import mongoose from "mongoose";
 import Error from 'next/error';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Image from 'next/image';
 
 
-function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
+function Slug({ buyNow, addToCart, product, variants, error }) {
   const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'multi', 'pink'];
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-
-
+  const [images, setImages] = useState(product.img);
+  const [activeImg, setActiveImage] = useState(product.img[0])
+  const [btn, setBtn] = useState('');
   const router = useRouter();
   const { slug } = router.query;
   const [pinToDeliver, setPin] = useState(0);
@@ -28,7 +30,6 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
       setColor(product.color)
       setSize(product.size)
     }
-    console.log(variants);
   }, [router.query])
 
 
@@ -43,7 +44,7 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
     if (Object.keys(pinJson).includes(pinToDeliver)) {
       setDelivery({ pin: pinToDeliver, service: true })
       toast.success('Your Pincode is Serviceable!', {
-        position: "top-right",
+        position: "top-left",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -55,7 +56,7 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
     } else {
       setDelivery({ pin: pinToDeliver, service: false })
       toast.error('Sorry, Pincode not serviceable!', {
-        position: "top-right",
+        position: "top-left",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -69,8 +70,13 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
 
 
   const refreshVariant = (newColor, newSize) => {
-    let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize]['slug']}`
-    router.push(url)
+    let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize]['slug']}`;
+    router.push(url);
+  }
+
+  const handleClass = (i)=>{
+        setBtn(i);
+        console.log(btn);
   }
 
   if (error == 404) {
@@ -91,16 +97,24 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
         pauseOnHover
         theme="light"
       />
-      <div className="container px-5 py-16 mx-auto">
+      <div className="container px-5 py-5 mx-auto">
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-          <img alt="product-image" className="lg:w-1/2 w-full lg:h-auto px-24 object-cover object-top rounded" src={product.img} />
-          <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNATION</h2>
-            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.size}/{product.color})</h1>
+          <div className='min-h-screen py-10 flex flex-col justify-between lg:flex-row gap-16 lg:items-center '>
+            <div className='flex flex-col gap-6 lg:w-2/4'>
+              <Image width={600} height={100} src={activeImg} alt="" className='w-full h-full border object-cover rounded-xl' />
+              <div className='flex flex-row justify-between h-24'>
+                {images.map((item, index) => {
+                  return <Image width={600} height={100} key={index} src={item} alt="" className='w-24 h-24 rounded-md cursor-pointer' onClick={() => setActiveImage(item)} />
+                })}
+              </div>
+            </div>
+            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+              <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNATION</h2>
+              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.size}/{product.color[0].toUpperCase()+product.color.slice(1)})</h1>
 
 
-            <div className="flex mb-4">
-              {/* <span className="flex items-center">
+              <div className="flex mb-4">
+                {/* <span className="flex items-center">
                   <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-orange-500" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                   </svg>
@@ -135,70 +149,91 @@ function Slug({ buyNow, addToCart, product, variants, error, isSideBar }) {
                     </svg>
                   </a>
                 </span> */}
-            </div>
-
-
-            <p className="leading-relaxed">{product.desc}</p>
-            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-              <div className="flex">
-                <span className="mr-3">Color</span>
-                {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button onClick={() => { refreshVariant('white', size) }} className={`border-2 ${color === 'white' ? 'border-black' : 'border-gray-300'} rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button onClick={() => { refreshVariant('red', size) }} className={`border-2 ${color === 'red' ? 'border-black' : 'border-gray-300'} ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button onClick={() => { refreshVariant('blue', size) }} className={`border-2 ${color === 'blue' ? 'border-black' : 'border-gray-300'} ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button onClick={() => { refreshVariant('green', size) }} className={`border-2 ${color === 'green' ? 'border-black' : 'border-gray-300'} ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button onClick={() => { refreshVariant('black', size) }} className={`border-2 ${color === 'black' ? 'border-black' : 'border-gray-300'} ml-1 bg-black rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button onClick={() => { refreshVariant('yellow', size) }} className={`border-2 ${color === 'yellow' ? 'border-black' : 'border-gray-300'} ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button onClick={() => { refreshVariant('purple', size) }} className={`border-2 ${color === 'purple' ? 'border-black' : 'border-gray-300'} ml-1 bg-purple-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('brown') && Object.keys(variants['brown']).includes(size) && <button onClick={() => { refreshVariant('brown', size) }} className={`border-2 ${color === 'brown' ? 'border-black' : 'border-gray-300'} ml-1 bg-amber-900 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                {Object.keys(variants).includes('pink') && Object.keys(variants['pink']).includes(size) && <button onClick={() => { refreshVariant('pink', size) }} className={`border-2 ${color === 'pink' ? 'border-black' : 'border-gray-300'} ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
               </div>
-              <div className="flex ml-6 items-center">
-                <span className="mr-3">Size</span>
-                <div className="relative -z-10">
-                  <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className={`rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10`}>
-                    {color && Object.keys(variants[color]).includes('S') && <option value={'S'}>S</option>}
-                    {color && Object.keys(variants[color]).includes('XS') && <option value={'XS'}>XS</option>}
-                    {color && Object.keys(variants[color]).includes('M') && <option value={'M'}>M</option>}
-                    {color && Object.keys(variants[color]).includes('L') && <option value={'L'}>L</option>}
-                    {color && Object.keys(variants[color]).includes('XL') && <option value={'XL'}>XL</option>}
-                    {color && Object.keys(variants[color]).includes('XXL') && <option value={'XXL'}>XXL</option>}
-                  </select>
-                  <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
-                      <path d="M6 9l6 6 6-6"></path>
-                    </svg>
-                  </span>
+
+              <div className='flex flex-col'>
+                <p className='font-bold text-lg'>Product Description:</p>
+                <p className="leading-relaxed">{product.desc}</p>
+              </div>
+              <div className='flex flex-col pt-6'>
+                <p className='font-bold text-lg'>Product Details:</p>
+                <ul className='list-disc pl-7'>
+                  {product.highlight.map((item, index) => {
+                    return <li key={index}>{item}</li>
+                  })}
+                </ul>
+              </div>
+              <div className="flex mt-6 items-center border-gray-100 mb-5">
+                <div className="flex">
+                  <span className="mr-2">Color:</span>
+                  {Object.keys(variants).map((col, index) => {
+                    if (colors.includes(col)) {
+                      if (Object.keys(variants[col]).includes(size)) {
+                        return <button key={col} onClick={() => { refreshVariant(col, size); }} className={`border-2 ${color === col ? 'border-black' : 'border-gray-300'} ${col === 'white' || col === 'black' ? `bg-${col}` : `bg-${col}-500`} rounded-full ml-1 w-6 h-6 focus:outline-none`}></button>
+                      }
+                    }
+                  })}
+                  {/* {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button onClick={() => { refreshVariant('white', size) }} className={`border-2 ${color === 'white' ? 'border-black' : 'border-gray-300'} rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button onClick={() => { refreshVariant('red', size) }} className={`border-2 ${color === 'red' ? 'border-black' : 'border-gray-300'} ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button onClick={() => { refreshVariant('blue', size) }} className={`border-2 ${color === 'blue' ? 'border-black' : 'border-gray-300'} ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button onClick={() => { refreshVariant('green', size) }} className={`border-2 ${color === 'green' ? 'border-black' : 'border-gray-300'} ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button onClick={() => { refreshVariant('black', size) }} className={`border-2 ${color === 'black' ? 'border-black' : 'border-gray-300'} ml-1 bg-black rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button onClick={() => { refreshVariant('yellow', size) }} className={`border-2 ${color === 'yellow' ? 'border-black' : 'border-gray-300'} ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button onClick={() => { refreshVariant('purple', size) }} className={`border-2 ${color === 'purple' ? 'border-black' : 'border-gray-300'} ml-1 bg-purple-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('brown') && Object.keys(variants['brown']).includes(size) && <button onClick={() => { refreshVariant('brown', size) }} className={`border-2 ${color === 'brown' ? 'border-black' : 'border-gray-300'} ml-1 bg-amber-900 rounded-full w-6 h-6 focus:outline-none`}></button>}
+                  {Object.keys(variants).includes('pink') && Object.keys(variants['pink']).includes(size) && <button onClick={() => { refreshVariant('pink', size) }} className={`border-2 ${color === 'pink' ? 'border-black' : 'border-gray-300'} ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none`}></button>} */}
                 </div>
               </div>
-            </div>
-            <div className="flex">
-              {product.availableQty > 0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
-              {product.availableQty <= 0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
-              <button disabled={product.availableQty <= 0} onClick={() => {
-                addToCart(product.slug, 1, product.price, product.title, product.size, product.color); toast.success('Item added to cart', {
-                  position: "top-center",
-                  autoClose: 2500,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                });
-              }} className="flex ml-8 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Add to Cart</button>
-              <button disabled={product.availableQty <= 0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
-              {/* <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+              <div className="flex mt-6 items-center mb-6">
+                <span className="mr-2">Size:</span>
+                <div className="relative">
+                  {color && Object.keys(variants[color]).map((siz, index) => {
+                    if (sizes.includes(siz)) {
+                      return <button key={siz} onClick={() => { handleClass(siz); refreshVariant(color, siz); }} className={`${btn === siz ? `bg-orange-100`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>{siz}</button>
+                    }
+                  })}
+                  {/* <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className={`rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10 cursor-pointer`}> */}
+                      {/* {color && Object.keys(variants[color]).includes('S') && <button  onClick={() => { handleClass("S"); refreshVariant(color, "S"); }} className={`${btn === "S" ? `bg-orange-300`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>S</button> }
+                      {color && Object.keys(variants[color]).includes('XS') && <button  onClick={() => { handleClass("XS"); refreshVariant(color, "XS"); }} className={` ${btn === "XS" ? `bg-orange-300`:""} XS text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`} >XS</button> }
+                      {color && Object.keys(variants[color]).includes('M') && <button  onClick={() => { handleClass("M"); refreshVariant(color, "M"); }} className={` ${btn === "M" ? `bg-orange-300`:""} M text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>M</button> }
+                      {color && Object.keys(variants[color]).includes('L') && <button  onClick={() => { handleClass("L"); refreshVariant(color, "L"); }} className={` L text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>L</button> }
+                      {color && Object.keys(variants[color]).includes('XL') && <button  onClick={() => { handleClass("XL"); refreshVariant(color, "XL"); }} className={` XL text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XL</button> }
+                      {color && Object.keys(variants[color]).includes('XXL') && <button  onClick={() => { handleClass("XXL"); refreshVariant(color, "XXL"); }} className={` XXl text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XXL</button>} */}
+                    {/* </select> */}
+                </div>
+              </div>
+              <div className='flex flex-row pb-4'>
+                {product.availableQty > 0 && <span className={`title-font font-medium text-2xl ${product.specialPrice ? "text-decoration-line: line-through text-color-gray-100" : ""} ${product.specialPrice ? 'text-gray-400' : 'text-gray-800'} pr-3`}>₹{product.price}</span>}
+                {product.availableQty > 0 && <p className={`title-font font-medium text-2xl ${product.specialPrice ? "" : "hidden"} text-gray-900`}>₹{product.specialPrice}</p>}
+                {product.availableQty == 0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
+              </div>
+              <div className="flex">
+                <button disabled={product.availableQty == 0} onClick={() => {
+                  addToCart(product.slug, 1, product.price, product.title, product.size, product.color); toast.success('Item added to cart', {
+                    position: "top-center",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }} className="flex text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Add to Cart</button>
+                <button disabled={product.availableQty == 0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
+                {/* <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                   </svg>
                 </button> */}
+              </div>
+              <div className="pin mt-6 flex space-x-2 text-sm">
+                <input maxLength={6} placeholder='Check Serviceability' onChange={onChangePin} type='text' className='px-2 border-2 border-gray-400 rounded-md focus:outline-orange-500' />
+                <button onClick={checkService} className=" text-white bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-orange-600 rounded">Check</button>
+              </div>
+              {!delivery.service && delivery.service != null && <div className="text-red-700 text-sm mt-3">Sorry! {delivery.pin} is not Serviceable</div>}
+              {delivery.service && delivery.service != null && <div className="text-green-700 text-sm mt-3">{delivery.pin} is Serviceable</div>}
             </div>
-            <div className="pin mt-6 flex space-x-2 text-sm">
-              <input placeholder='Check Serviceability' onChange={onChangePin} type='text' className='px-2 border-2 border-gray-400 rounded-md focus:outline-orange-500 hover:bg-orange-100' />
-              <button onClick={checkService} className=" text-white bg-orange-500 border-0 py-2 px-6 focus:outline-none hover:bg-orange-600 rounded">Check</button>
-            </div>
-            {!delivery.service && delivery.service != null && <div className="text-red-700 text-sm mt-3">Sorry! {delivery.pin} is not Serviceable</div>}
-            {delivery.service && delivery.service != null && <div className="text-green-700 text-sm mt-3">{delivery.pin} is Serviceable</div>}
           </div>
         </div>
       </div>

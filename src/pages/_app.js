@@ -4,7 +4,7 @@ import '@/styles/globals.css'
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import LoadingBar from 'react-top-loading-bar';
-import FullLayout from '@/layouts/FullLayout';
+
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
@@ -13,7 +13,6 @@ export default function App({ Component, pageProps }) {
   const [key, setKey] = useState(0);
   const [progress, setProgress] = useState(0);
   const [sideBar, setSideBar] = useState(true);
-
 
   useEffect(() => {
     router.events.on('routeChangeStart', () => {
@@ -39,7 +38,6 @@ export default function App({ Component, pageProps }) {
       setKey(Math.random())
     }
   }, [router.query])
-
 
   const sideBarCheck = () => {
     setSideBar(!sideBar)
@@ -109,7 +107,7 @@ export default function App({ Component, pageProps }) {
       onLoaderFinished={() => setProgress(0)}
     />
     <Navbar logout={logOut} user={user} sideBarCheck={sideBarCheck} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
-    <Component isSideBar={sideBar} buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
+    <Component user={user} isSideBar={sideBar} buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} {...pageProps} />
     <Footer />
   </>
 }

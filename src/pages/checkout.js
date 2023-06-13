@@ -8,7 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Router from 'next/router';
 
-function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
+function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -16,23 +16,23 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
   const [pincode, setPincode] = useState('');
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
-  const [user, setUser] = useState({ value:null});
+  const [user, setUser] = useState({ value: null });
   const [disabled, setDisabled] = useState(true);
 
-  useEffect(()=>{
+  useEffect(() => {
 
     const myuser = JSON.parse(localStorage.getItem('myuser'));
-   if(myuser && myuser.token){
-    setUser(myuser)
-    setEmail(myuser.email);
-    fetchUserData(myuser.token);
-   }
+    if (myuser && myuser.token) {
+      setUser(myuser)
+      setEmail(myuser.email);
+      fetchUserData(myuser.token);
+    }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(name.length > 3 && email.length > 3 && address.length > 3 && phone.length > 3 && pincode.length > 3){
-      setDisabled(false);
+    if (name.length > 3 && email.length > 3 && address.length > 3 && phone.length > 3 && pincode.length > 3) {
+        setDisabled(false);
     } else {
       setDisabled(true);
     }
@@ -55,7 +55,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
     getPincode(res.pincode)
   }
 
-  const getPincode = async (pin)=>{
+  const getPincode = async (pin) => {
     let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`)
     let pinJson = await pins.json()
     if (Object.keys(pinJson).includes(pin)) {
@@ -72,19 +72,19 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
   const handleChange = async (e) => {
     const { name, value } = e.target;
 
-    if(name == 'name'){
+    if (name == 'name') {
       setName(value);
-    } else if (name == 'email'){
+    } else if (name == 'email') {
       setEmail(value)
-    }else if (name == 'address'){
+    } else if (name == 'address') {
       setEmail(value)
-    }else if (name == 'phone'){
+    } else if (name == 'phone') {
       setEmail(value)
     }
     else if (name == 'pincode') {
       setPincode(value);
       if (value.length == 6) {
-           getPincode(value);
+        getPincode(value);
       }
     }
   }
@@ -128,7 +128,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-          }).then((t)=>t.json())
+          }).then((t) => t.json())
           Router.push(`/order?clearCart=1&id=${res.id}`)
         },
       };
@@ -139,7 +139,7 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
         alert(response.error.description);
       });
     } else {
-      if(data.cartClear){
+      if (data.cartClear) {
         clearCart();
       }
       toast.error(data.error, {
@@ -151,12 +151,12 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   }
 
   return (
-    <div className='container px-2 sm:m-auto min-h-screen'>
+    <div className='container px-2 sm:m-auto min-h-screen pb-10'>
       <ToastContainer
         position="top-left"
         autoClose={4000}
@@ -179,82 +179,99 @@ function Checkout({cart, clearCart, addToCart, removeFromCart, subTotal }) {
       />
       {/* <Script type='application/javascript' crossOrigin='anonymous' src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}/> */}
       <h1 className='font-bold text-3xl my-8 text-center'>Checkout</h1>
-      <h2 className='font-semibold text-xl'>1. Delivery Details</h2>
-      <div className="mx-auto flex my-2">
-        <div className="px-2 w-1/2">
-          <div className="mb-4">
-            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
-            <input type="text" id="name" name="name" onChange={handleChange} value={name} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+      <main>
+        <h2 className='font-semibold text-xl'>1. Delivery Details</h2>
+        <div className="mx-auto flex my-2">
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
+              <input type="text" id="name" name="name" onChange={handleChange} value={name} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            </div>
+          </div>
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
+              {user && user.token ? <input readOnly type="email" id="email" name="email" value={user.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" /> :
+                <input type="email" id="email" name="email" onChange={handleChange} value={email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />}
+            </div>
           </div>
         </div>
-        <div className="px-2 w-1/2">
+        <div className="px-2 w-full">
           <div className="mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-           {user && user.token ? <input readOnly type="email" id="email" name="email" value={user.email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />:
-            <input type="email" id="email" name="email" onChange={handleChange} value={email} pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />}
+            <label htmlFor="address" className="leading-7 text-sm text-gray-600">Address</label>
+            <textarea rows={2} cols={30} type="text" id="address" name="address" onChange={handleChange} value={address} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
           </div>
         </div>
-      </div>
-      <div className="px-2 w-full">
-        <div className="mb-4">
-          <label htmlFor="address" className="leading-7 text-sm text-gray-600">Address</label>
-          <textarea rows={2} cols={30} type="text" id="address" name="address" onChange={handleChange} value={address} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
-        </div>
-      </div>
-      <div className="mx-auto flex my-2">
-        <div className="px-2 w-1/2">
-          <div className="mb-4">
-            <label htmlFor="phone" className="leading-7 text-sm text-gray-600">Phone</label>
-            <input placeholder='Your 10 Digit Phone Number' type="tel" id="phone" name="phone" onChange={handleChange} value={phone} pattern="[0-9]{10}" maxLength={10} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+        <div className="mx-auto flex my-2">
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="phone" className="leading-7 text-sm text-gray-600">Phone</label>
+              <input placeholder='Your 10 Digit Phone Number' type="tel" id="phone" name="phone" onChange={handleChange} value={phone} pattern="[0-9]{10}" maxLength={10} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            </div>
+          </div>
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="pincode" className="leading-7 text-sm text-gray-600">Pincode</label>
+              <input type="text" id="pincode" name="pincode" onChange={handleChange} value={pincode} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            </div>
           </div>
         </div>
-        <div className="px-2 w-1/2">
-          <div className="mb-4">
-            <label htmlFor="pincode" className="leading-7 text-sm text-gray-600">Pincode</label>
-            <input type="text" id="pincode" name="pincode" onChange={handleChange} value={pincode} required className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+        <div className="mx-auto flex my-2">
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="state" className="leading-7 text-sm text-gray-600">State</label>
+              <input onChange={handleChange} value={state} type="text" id="state" name="state" className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            </div>
+          </div>
+          <div className="px-2 w-1/2">
+            <div className="mb-4">
+              <label htmlFor="city" className="leading-7 text-sm text-gray-600">District</label>
+              <input onChange={handleChange} value={city} type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mx-auto flex my-2">
-        <div className="px-2 w-1/2">
-          <div className="mb-4">
-            <label htmlFor="state" className="leading-7 text-sm text-gray-600">State</label>
-            <input onChange={handleChange} value={state} type="text" id="state" name="state" className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-          </div>
-        </div>
-        <div className="px-2 w-1/2">
-          <div className="mb-4">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">District</label>
-            <input onChange={handleChange} value={city} type="text" id="city" name="city" className="w-full bg-white rounded border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-          </div>
-        </div>
-      </div>
 
-      <h2 className='font-semibold text-xl'>2. Review Cart Items & Pay</h2>
+        <h2 className='font-semibold text-xl'>2. Review Cart Items & Pay</h2>
 
-      <div className="sideCart shadow-xl border border-orange-600 m-2 p-6">
-        <ol className='list-decimal font-semibold'>
-          {Object.keys(cart).length === 0 && <div className='my-4 font-semibold'>Your cart is empty!</div>}
-          {Object.keys(cart).map((k) => {
-            return <li key={k}>
-              <div className="item flex my-5">
-                <div className='font-semibold'>{cart[k].name}({cart[k].size}/{cart[k].variant})</div>
-                <div className='font-semibold flex justify-center item-center w-1/3 text-lg'><AiOutlineMinusCircle onClick={() => { removeFromCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /><span className='mx-2 text-sm'>{cart[k].qty}</span><AiOutlinePlusCircle onClick={() => { addToCart(k, 1, cart[k].price, cart[k].name, cart[k].size, cart[k].variant) }} className='text-orange-500 cursor-pointer' /></div>
+        <div className="sideCart shadow-xl border m-2 mt-6 p-6 mb-6">
+          <ol className='list-decimal font-semibold'>
+            {Object.keys(cart).length === 0 && <div className='my-4 font-semibold'>Your cart is empty!</div>}
+            {Object.keys(cart).map((item) => {
+              return <li key={item._id} className="flex py-6">
+              <div className="ml-4 flex flex-1 flex-col">
+                  <div>
+                      <div className="flex justify-between text-base font-medium text-gray-900">
+                          <h3>
+                              {cart[item].name}
+                          </h3>
+                          <p className="ml-4">₹{cart[item].price}</p>
+                      </div>
+                      <p className="mt-1 text-sm text-gray-500">Color: {cart[item].variant}</p>
+                      <p className="mt-1 text-sm text-gray-500">Size: {cart[item].size}</p>
+                  </div>
+                  <div className="flex flex-1 items-end justify-between text-sm mt-2">
+                      <div className="flex items-center border-gray-100">
+                          <p className='text-gray-500 mr-2'>Qty</p>
+                          <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-orange-500 hover:text-orange-50"> - </span>
+                          <p className="py-1 px-3.5 border bg-white text-center text-xs outline-none">{cart[item].qty}</p>
+                          <span onClick={() => { addToCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> + </span>
+                      </div>
+                  </div>
               </div>
-            </li>
-          })
-          }
-        </ol>
-        <span className='total font-bold'>Subtotal: ₹{subTotal}</span>
+          </li>
+            })
+            }
+          </ol>
+          <span className='total font-bold'>Subtotal: ₹{subTotal}</span>
 
-      </div>
+        </div>
 
-      <div className="mx-4">
-        <Link href={'/checkout'}>
-          <button disabled={disabled} onClick={initiatePayment} className=" disabled:bg-orange-200   flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md"><BsFillBagCheckFill className='m-1 mt-1' />Pay</button>
-        </Link>
-      </div>
-
+        <div className="mx-4">
+          <Link href={'/checkout'}>
+            <button disabled={disabled} onClick={initiatePayment} className=" disabled:bg-orange-200   flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md"><BsFillBagCheckFill className='m-1 mt-1' />Pay</button>
+          </Link>
+        </div>
+    </main >
     </div>
   )
 }

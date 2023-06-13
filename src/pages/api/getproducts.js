@@ -1,33 +1,41 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
 import Product from "../../../models/Product";
 import connectDb from "../../../middleware/mongoose";
 
 const handler = async (req, res) => {
-  let products = await Product.find()
-  let tshirts = {}
-
+  const {category} = JSON.parse(req.body)
+  let products = await Product.find({category: category})
+  let product = {}
+  let result =[]; 
   for (let item of products) {
-    if (item.title in tshirts) {
+    if (item.title in product) {
 
-      if (!tshirts[item.title].color.includes(item.color) && item.availableQty > 0) {
-        tshirts[item.title].color.push(item.color)
+      if (!product[item.title].color.includes(item.color) && item.availableQty > 0) {
+        product[item.title].color.push(item.color)
       }
 
-      if (!tshirts[item.title].size.includes(item.size) && item.availableQty > 0) {
-        tshirts[item.title].size.push(item.size)
+      if (!product[item.title].size.includes(item.size) && item.availableQty > 0) {
+        product[item.title].size.push(item.size)
       }
       
     } else {
-      tshirts[item.title] = JSON.parse(JSON.stringify(item));
+      product[item.title] = JSON.parse(JSON.stringify(item));
 
       if (item.availableQty > 0) {
-        tshirts[item.title].color = [item.color]
-        tshirts[item.title].size = [item.size]
-      }
+        product[item.title].color = [item.color]
+        product[item.title].size = [item.size]
+      }else {
+        product[item.title].color = []
+        product[item.title].size = []
+    }
     }
   }
-  res.status(200).json({ tshirts })
+
+  Object.keys(product).map((item)=>{
+    result.push(product[item])
+  })
+  let newResult = result.slice(0,parseInt(req.query.count));
+  
+  res.status(200).json(newResult);
 }
 
 export default connectDb(handler);

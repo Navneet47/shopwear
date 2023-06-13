@@ -1,14 +1,52 @@
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useRef, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subTotal, sideBarCheck }) {
     const [menu, setMenu] = useState(false);
+    const [expired, setExp] = useState(true);
     const profileRef = useRef();
     const [mobileMenu, setMobileMenu] = useState(false);
     const MobileRef = useRef();
     const [openCart, setCart] = useState(true);
     const cartRef = useRef();
+    const router = useRouter();
+
+    async function get() {
+        const user = JSON.parse(localStorage.getItem('myuser'));
+        if (user && user.token) {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/verifyTokenAuthentication`, { token: user.token }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            if (res.data.msg == 'jwt expired') {
+                setExp(false);
+                localStorage.removeItem('myuser');
+                router.push('/login');
+                toast.error('Token Expired, Please Login again!', {
+                    position: "top-left",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            } else {
+                setExp(true);
+            }
+        }
+    }
+
+    useEffect(() => {
+        get();
+    }, [router.pathname])
 
     const handleMenu = () => {
         setMenu(!menu);
@@ -32,6 +70,18 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
     return (
         <>
             <nav className="bg-gray-800 z-30 sticky top-0">
+                <ToastContainer
+                    position="top-left"
+                    autoClose={4000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
                         <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -71,7 +121,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                     <Link href={"/tshirts"} className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">T-shirts</Link>
                                     <Link href={"/hoodies"} className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Hoodies</Link>
                                     <Link href={"/mugs"} className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Mugs</Link>
-                                    <Link href={"/stickers"} className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Stickers</Link>
+                                    <Link href={"/sneakers"} className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Sneakers</Link>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +140,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                             {/* <!-- Profile dropdown --> */}
                             <div className="relative ml-3">
                                 <div>
-                                    {user.value ? <button onClick={handleMenu} type="button" className="flex rounded-full bg-orange-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    {user.value ? <button disabled={!expired} onClick={handleMenu} type="button" className="flex rounded-full disabled:bg-orange-300 bg-orange-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span className="sr-only">Open user menu</span>
                                         <MdAccountCircle className='h-8 w-8 rounded-full' />
                                     </button> : <Link href={"/login"}>
@@ -115,9 +165,9 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
           --> */}
                                 <div ref={profileRef} className={`absolute ${menu ? "" : "hidden"} right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1"`}>
                                     {/* <!-- Active: "bg-gray-100", Not Active: "" --> */}
-                                    <Link href={"/myaccount"} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-0">My Account</Link>
-                                    <Link href={"/orders"} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-1">My Orders</Link>
-                                    <p onClick={() => { logout() }} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">Logout</p>
+                                    <Link href={"/myaccount"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-0">My Account</Link>
+                                    <Link href={"/orders"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-1">My Orders</Link>
+                                    <p onClick={() => { logout() }} className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-2">Logout</p>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +181,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                         <Link href={"/tshirts"} className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">T-shirts</Link>
                         <Link href={"/hoodies"} className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Hoodies</Link>
                         <Link href={"/mugs"} className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Mugs</Link>
-                        <Link href={"/stickers"} className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Stickers</Link>
+                        <Link href={"/sneakers"} className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Sneakers</Link>
                     </div>
                 </div>
                 <div ref={cartRef} className="relative z-10 hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
@@ -161,7 +211,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
           To: "translate-x-full"
         --> */}
 
-        {/* Cart  */}
+                                {/* Cart  */}
                                 <div className="pointer-events-auto w-screen max-w-md">
                                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                         <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -183,7 +233,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                         {Object.keys(cart).length === 0 && <div className='my-6 text-center font-semibold'>Your cart is empty!</div>}
 
                                                         {Object.keys(cart).map((item) => {
-                                                            return <li key={item} className="flex py-6">
+                                                            return <li key={item._id} className="flex py-6">
                                                                 <div className="ml-4 flex flex-1 flex-col">
                                                                     <div>
                                                                         <div className="flex justify-between text-base font-medium text-gray-900">
@@ -192,8 +242,8 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                                             </h3>
                                                                             <p className="ml-4">₹{cart[item].price}</p>
                                                                         </div>
-                                                                        <p className="mt-1 text-sm text-gray-500">{cart[item].variant}</p>
-                                                                        <p className="mt-1 text-sm text-gray-500">{cart[item].size}</p>
+                                                                        <p className="mt-1 text-sm text-gray-500">Color: {cart[item].variant}</p>
+                                                                        <p className="mt-1 text-sm text-gray-500">Size: {cart[item].size}</p>
                                                                     </div>
                                                                     <div className="flex flex-1 items-end justify-between text-sm mt-2">
                                                                         <div className="flex items-center border-gray-100">

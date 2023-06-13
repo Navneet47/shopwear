@@ -5,11 +5,12 @@ import FullLayout from "@/layouts/FullLayout";
 import BlogCard from "@/Components/dashboard/BlogCard";
 import SalesOverview from "@/Components/dashboard/SalesOverview";
 import DailyActivity from "@/Components/dashboard/DailyActivity";
-import ProductPerfomance from "@/Components/dashboard/ProductPerfomance";
+import ProductPerfomance from "@/Components/dashboard/AllProducts";
 
 export default function Index() {
   return (
     <ThemeProvider theme={theme}>
+      <style jsx global>{`footer{display:none}`}</style>
     <FullLayout>
     <Grid container spacing={0}>
       <Grid item xs={12} lg={12}>

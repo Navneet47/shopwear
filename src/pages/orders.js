@@ -31,10 +31,12 @@ function Orders() {
     <>
       <div>
         <h1 className='font-bold text-xl p-8 text-center'>My Orders</h1>
+        {orders.length === 0 && <h4 className='font-bold text-xl pb-2 text-center'>You have not ordered anything!</h4>}
       </div>
+      <main className='pb-40'>
       <div className='container min-h-screen border-solid border-4 mx-auto'>
-
-        <div className="relative -z-10 overflow-x-auto">
+        
+        <div className="relative overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
               <tr>
@@ -82,6 +84,7 @@ function Orders() {
         </div>
 
       </div>
+      </main>
     </>
 
   )
