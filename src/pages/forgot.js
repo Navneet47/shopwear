@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Head from 'next/head';
 
 function Forgot() {
 
@@ -19,18 +19,18 @@ function Forgot() {
     }
   }, []);
 
-  const handleChange = (e)=>{
-       const {name,value} = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-       if(name == 'email'){
-        setEmail(value);
-       }
-       
-       if(name == 'password'){
-        setPassword(value)
-       } else if (name == 'cpassword'){
-        setCpassword(value)
-       }
+    if (name == 'email') {
+      setEmail(value);
+    }
+
+    if (name == 'password') {
+      setPassword(value)
+    } else if (name == 'cpassword') {
+      setCpassword(value)
+    }
 
   }
 
@@ -59,12 +59,12 @@ function Forgot() {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
-          setPassword('');
-          setCpassword('');
-          setTimeout(()=>{
-            router.push('/login');
-          },2000)
+        });
+        setPassword('');
+        setCpassword('');
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000)
       } else {
         toast.error("Error", {
           position: "top-left",
@@ -75,7 +75,7 @@ function Forgot() {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
+        });
       }
     } else {
       toast.error("Password Not Matching", {
@@ -87,53 +87,57 @@ function Forgot() {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   }
 
-const sendResetEmail = async () => {
-  let data = {
-    email,
-    sendMail: true
-  }
-  let req = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  })
-  let res = await req.json();
-  console.log(res);
-  if (res.success) {
-    toast.success("Password reset Instruction have been sent to your email, If you don't find email, Please check Spam folder!", {
-      position: "top-left",
-      autoClose: 7000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+  const sendResetEmail = async () => {
+    let data = {
+      email,
+      sendMail: true
+    }
+    let req = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    let res = await req.json();
+    console.log(res);
+    if (res.success) {
+      toast.success("Password reset Instruction have been sent to your email, If you don't find email, Please check Spam folder!", {
+        position: "top-left",
+        autoClose: 7000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-  } else {
-    toast.error("Error", {
-      position: "top-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    } else {
+      toast.error("Error", {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
   }
-}
 
 
-return (
-  <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <ToastContainer
+  return (<>
+    <Head>
+      <title>Forgot Password - Shopnation.in</title>
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+    </Head>
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <ToastContainer
         position="top-left"
         autoClose={4000}
         hideProgressBar={false}
@@ -145,12 +149,16 @@ return (
         pauseOnHover
         theme="light"
       />
-    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-      {router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Reset Password</h2>}
-      {!router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>}
-    </div>
 
-    {router.query.token && <div className="space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <header>
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        {router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Reset Password</h2>}
+        {!router.query.token && <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Forgot Password?</h2>}
+      </div>
+      </header>
+      <main>
+
+      {router.query.token && <div className="space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div>
           <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
           <div className="mt-2">
@@ -167,9 +175,9 @@ return (
         <div>
           <button onClick={resetPassword} type="submit" className=" disabled:bg-slate-200 flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Reset</button>
         </div>
-        {password && password == cpassword ? <span className='text-green-600'>Password matched </span> : <span className='text-red-600'>Password does not match </span> }
-    </div>}
-    {!router.query.token && <div className= "space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        {password && password == cpassword ? <span className='text-green-600'>Password matched </span> : <span className='text-red-600'>Password does not match </span>}
+      </div>}
+      {!router.query.token && <div className="space-y-6 mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div>
           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email</label>
           <div className="mt-2">
@@ -181,15 +189,17 @@ return (
           <button onClick={sendResetEmail} type="submit" className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Continue</button>
         </div>
 
-      <p className="mt-10 text-center text-sm text-gray-500">
-        Remember password?
-        <Link href={"/login"}>
-          <span className="font-semibold leading-6 text-orange-600 hover:text-orange-500"> Login</span>
-        </Link>
-      </p>
-    </div>}
-  </div>
-)
+        <p className="mt-10 text-center text-sm text-gray-500">
+          Remembered password?
+          <Link href={"/login"}>
+            <span className="font-semibold leading-6 text-orange-600 hover:text-orange-500"> Login</span>
+          </Link>
+        </p>
+      </div>}
+      </main>
+    </div>
+  </>
+  )
 }
 
 export default Forgot;

@@ -6,6 +6,7 @@ import Error from 'next/error';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
+import Head from 'next/head';
 
 
 function Slug({ buyNow, addToCart, product, variants, error }) {
@@ -74,9 +75,9 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
     router.push(url);
   }
 
-  const handleClass = (i)=>{
-        setBtn(i);
-        console.log(btn);
+  const handleClass = (i) => {
+    setBtn(i);
+    console.log(btn);
   }
 
   if (error == 404) {
@@ -84,6 +85,10 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
   }
 
   return <>
+    <Head>
+      <title>Buy {product.title} - Shopnation.com</title>
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+    </Head>
     <section className="text-gray-600 body-font overflow-hidden min-h-screen">
       <ToastContainer
         position="top-right"
@@ -110,7 +115,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
             </div>
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNATION</h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.size}/{product.color[0].toUpperCase()+product.color.slice(1)})</h1>
+              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.size}/{product.color[0].toUpperCase() + product.color.slice(1)})</h1>
 
 
               <div className="flex mb-4">
@@ -189,22 +194,22 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
                 <div className="relative">
                   {color && Object.keys(variants[color]).map((siz, index) => {
                     if (sizes.includes(siz)) {
-                      return <button key={siz} onClick={() => { handleClass(siz); refreshVariant(color, siz); }} className={`${btn === siz ? `bg-orange-100`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>{siz}</button>
+                      return <button key={siz} onClick={() => { handleClass(siz); refreshVariant(color, siz); }} className={`${btn === siz ? `bg-orange-100` : ""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>{siz}</button>
                     }
                   })}
                   {/* <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className={`rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10 cursor-pointer`}> */}
-                      {/* {color && Object.keys(variants[color]).includes('S') && <button  onClick={() => { handleClass("S"); refreshVariant(color, "S"); }} className={`${btn === "S" ? `bg-orange-300`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>S</button> }
+                  {/* {color && Object.keys(variants[color]).includes('S') && <button  onClick={() => { handleClass("S"); refreshVariant(color, "S"); }} className={`${btn === "S" ? `bg-orange-300`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>S</button> }
                       {color && Object.keys(variants[color]).includes('XS') && <button  onClick={() => { handleClass("XS"); refreshVariant(color, "XS"); }} className={` ${btn === "XS" ? `bg-orange-300`:""} XS text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`} >XS</button> }
                       {color && Object.keys(variants[color]).includes('M') && <button  onClick={() => { handleClass("M"); refreshVariant(color, "M"); }} className={` ${btn === "M" ? `bg-orange-300`:""} M text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>M</button> }
                       {color && Object.keys(variants[color]).includes('L') && <button  onClick={() => { handleClass("L"); refreshVariant(color, "L"); }} className={` L text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>L</button> }
                       {color && Object.keys(variants[color]).includes('XL') && <button  onClick={() => { handleClass("XL"); refreshVariant(color, "XL"); }} className={` XL text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XL</button> }
                       {color && Object.keys(variants[color]).includes('XXL') && <button  onClick={() => { handleClass("XXL"); refreshVariant(color, "XXL"); }} className={` XXl text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XXL</button>} */}
-                    {/* </select> */}
+                  {/* </select> */}
                 </div>
               </div>
               <div className='flex flex-row pb-4'>
-                {product.availableQty > 0 && <span className={`title-font font-medium text-2xl ${product.specialPrice ? "text-decoration-line: line-through text-color-gray-100" : ""} ${product.specialPrice ? 'text-gray-400' : 'text-gray-800'} pr-3`}>₹{product.price}</span>}
-                {product.availableQty > 0 && <p className={`title-font font-medium text-2xl ${product.specialPrice ? "" : "hidden"} text-gray-900`}>₹{product.specialPrice}</p>}
+                {product.availableQty > 0 && <span className={`title-font font-medium text-2xl ${product.salePrice ? "text-decoration-line: line-through text-color-gray-100" : ""} ${product.salePrice ? 'text-gray-400' : 'text-gray-800'} pr-3`}>₹{product.price}</span>}
+                {product.availableQty > 0 && <p className={`title-font font-medium text-2xl ${product.salePrice ? "" : "hidden"} text-gray-900`}>₹{product.salePrice}</p>}
                 {product.availableQty == 0 && <span className="title-font font-medium text-2xl text-gray-900">Out of stock!</span>}
               </div>
               <div className="flex">

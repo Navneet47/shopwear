@@ -27,7 +27,7 @@ function Sneakers({ products, allCount }) {
     return (
         <div>
             <Head>
-                <title>Buy Sneakers at best price in India - Shopnation.com</title>
+                <title>Buy Sneakers at best price in India</title>
                 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
             </Head>
             <header>

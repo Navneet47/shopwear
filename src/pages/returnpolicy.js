@@ -5,7 +5,7 @@ const Returnpolicy = () => {
     return (
         <>
             <Head>
-                <title>Return Policy - Shopnation.com</title>
+                <title>Return Policy - Shopnation.in</title>
                 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
             </Head>
             <div className='container min-h-screen my-15 mx-auto'>

@@ -6,8 +6,30 @@ import BlogCard from "@/Components/dashboard/BlogCard";
 import SalesOverview from "@/Components/dashboard/SalesOverview";
 import DailyActivity from "@/Components/dashboard/DailyActivity";
 import ProductPerfomance from "@/Components/dashboard/AllProducts";
+import Error from "next/error";
+import { useEffect, useState } from "react";
 
 export default function Index() {
+
+  const [admin, setAdmin] = useState(null);
+  const [users, setUser] = useState(process.env.NEXT_PUBLIC_ADMIN_ID);
+
+useEffect(()=>{
+  const user = localStorage.getItem('myuser');
+  if(user){
+    setAdmin(JSON.parse(user));
+  }
+},[]);
+
+if(admin == null){
+  return <Error statusCode={404}/>
+}
+
+if(admin.email !== users){
+  return <Error statusCode={404} />
+}
+
+
   return (
     <ThemeProvider theme={theme}>
       <style jsx global>{`footer{display:none}`}</style>

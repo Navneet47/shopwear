@@ -27,7 +27,7 @@ function Mugs({ products, allCount }) {
     return (
         <div>
             <Head>
-                <title>Buy Mugs at best price in India - Shopnation.com</title>
+                <title>Buy Mugs at best price in India - Shopnation.in</title>
                 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
             </Head>
             <header>

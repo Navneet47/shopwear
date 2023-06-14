@@ -2,7 +2,7 @@ import Product from "../../../models/Product";
 import connectDb from "../../../middleware/mongoose";
 
 const handler = async (req, res) => {
-  const {category} = JSON.parse(req.body)
+  const {category} = JSON.parse(req.body);
   let products = await Product.find({category: category})
   let product = {}
   let result =[]; 
@@ -33,7 +33,12 @@ const handler = async (req, res) => {
   Object.keys(product).map((item)=>{
     result.push(product[item])
   })
-  let newResult = result.slice(0,parseInt(req.query.count));
+  let newResult;
+  if(req.query.count){
+    newResult = result.slice(0,parseInt(req.query.count));
+  } else {
+    newResult = result;
+  }
   
   res.status(200).json(newResult);
 }

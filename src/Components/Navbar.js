@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
+import { BsTrash2, BsTrashFill } from 'react-icons/bs';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,13 +18,16 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
     const router = useRouter();
 
     async function get() {
+
         const user = JSON.parse(localStorage.getItem('myuser'));
+
         if (user && user.token) {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_HOST}/api/verifyTokenAuthentication`, { token: user.token }, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
+            
             if (res.data.msg == 'jwt expired') {
                 setExp(false);
                 localStorage.removeItem('myuser');
@@ -165,6 +169,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
           --> */}
                                 <div ref={profileRef} className={`absolute ${menu ? "" : "hidden"} right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1"`}>
                                     {/* <!-- Active: "bg-gray-100", Not Active: "" --> */}
+                                    {!expired && <Link href={"/login"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-0">Login</Link>}
                                     <Link href={"/myaccount"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-0">My Account</Link>
                                     <Link href={"/orders"} className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-1">My Orders</Link>
                                     <p onClick={() => { logout() }} className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-slate-200" role="menuitem" tabIndex="-1" id="user-menu-item-2">Logout</p>
@@ -232,8 +237,8 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                         {Object.keys(cart).length === 0 && <div className='my-6 text-center font-semibold'>Your cart is empty!</div>}
 
-                                                        {Object.keys(cart).map((item) => {
-                                                            return <li key={item._id} className="flex py-6">
+                                                        {Object.keys(cart).map((item,index) => {
+                                                            return <li key={index} className="flex py-6">
                                                                 <div className="ml-4 flex flex-1 flex-col">
                                                                     <div>
                                                                         <div className="flex justify-between text-base font-medium text-gray-900">
@@ -248,7 +253,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                                     <div className="flex flex-1 items-end justify-between text-sm mt-2">
                                                                         <div className="flex items-center border-gray-100">
                                                                             <p className='text-gray-500 mr-2'>Qty</p>
-                                                                            <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-orange-500 hover:text-orange-50"> - </span>
+                                                                            {cart[item].qty > 1 ? <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> - </span> : <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1.5 px-3.5 duration-100 hover:bg-orange-500 hover:text-orange-50"> {<BsTrashFill/>} </span>}
                                                                             <p className="py-1 px-3.5 border bg-white text-center text-xs outline-none">{cart[item].qty}</p>
                                                                             <span onClick={() => { addToCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> + </span>
                                                                         </div>

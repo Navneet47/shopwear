@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme/theme";
 import FullLayout from "@/layouts/FullLayout";
@@ -14,8 +14,11 @@ import {
   Button,
 } from "@mui/material";
 import BaseCard from '@/Components/baseCard/BaseCard';
+import Error from 'next/error';
 
 const Add = () => {
+  const [admin, setAdmin] = useState(null);
+  const [users, setUser] = useState(process.env.NEXT_PUBLIC_ADMIN_ID);
   const [form, setForm] = useState({
     title:'',
     color:'',
@@ -55,8 +58,23 @@ const Add = () => {
       body: JSON.stringify({product:form,img:info.img, highlight: info.highlight })
     })
     let res = req.json();
-    console.log(res);
   }
+
+
+useEffect(()=>{
+  const user = localStorage.getItem('myuser');
+  if(user){
+    setAdmin(JSON.parse(user));
+  }
+},[]);
+
+if(admin == null){
+  return <Error statusCode={404}/>
+}
+
+if(admin.email !== users){
+  return <Error statusCode={404} />
+}
 
   return (
     <ThemeProvider theme={theme}>

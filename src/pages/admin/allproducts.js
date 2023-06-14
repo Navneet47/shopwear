@@ -6,9 +6,27 @@ import { Grid } from "@mui/material";
 import ProductPerfomance from '@/Components/dashboard/AllProducts';
 import mongoose from 'mongoose';
 import Product from '../../../models/Product';
+import Error from 'next/error';
+import { useState, useEffect } from 'react';
 
 const AllProducts = ({products}) => {
+  const [admin, setAdmin] = useState(null);
+  const [users, setUser] = useState(process.env.NEXT_PUBLIC_ADMIN_ID);
 
+useEffect(()=>{
+  const user = localStorage.getItem('myuser');
+  if(user){
+    setAdmin(JSON.parse(user));
+  }
+},[]);
+
+if(admin == null){
+  return <Error statusCode={404}/>
+}
+
+if(admin.email !== users){
+  return <Error statusCode={404} />
+}
   return (
     <ThemeProvider theme={theme}>
       <FullLayout>

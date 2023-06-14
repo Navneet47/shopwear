@@ -156,6 +156,7 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
   }
 
   return (
+    <>
     <div className='container px-2 sm:m-auto min-h-screen pb-10'>
       <ToastContainer
         position="top-left"
@@ -170,13 +171,13 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
         theme="light"
       />
       <Head>
-        <title>Checkout - Shopnation.com</title>
+        <title>Checkout - Shopnation.in</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
       </Head>
       <Script
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
-      />
+        />
       {/* <Script type='application/javascript' crossOrigin='anonymous' src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}/> */}
       <h1 className='font-bold text-3xl my-8 text-center'>Checkout</h1>
       <main>
@@ -273,6 +274,7 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
         </div>
     </main >
     </div>
+</>
   )
 }
 

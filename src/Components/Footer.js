@@ -6,11 +6,11 @@ function Footer() {
     return (
         <div>
             <footer className="text-gray-600 bg-gray-100 body-font mt-10">
-                <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+                <div className="container px-5 py-10 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
                     <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
                         <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
                             {/* <Image src='/home-image.png' alt='footer-logo' width={100} height={10}/> */}
-                            <p className='text-2xl text-orange-600'>SHOPNATION</p>
+                            <p className='text-2xl text-orange-600 px-4'>SHOPNATION</p>
                         </a>
                         <p className="mt-2 text-sm text-gray-500 px-4">Shop anything you like</p>
                         <p className='text-sm text-gray-500 px-4'> t-shirts, hoodies and lot more</p>

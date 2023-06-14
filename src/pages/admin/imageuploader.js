@@ -4,6 +4,8 @@ import theme from "@/theme/theme";
 import FullLayout from "@/layouts/FullLayout";
 import { Grid, ImageList, ImageListItem } from "@mui/material";
 import BaseCard from '@/Components/baseCard/BaseCard';
+import Error from 'next/error';
+import { useState, useEffect } from 'react';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -74,6 +76,23 @@ const itemData = [
   },
 ];
 const ImageUploader = () => {
+  const [admin, setAdmin] = useState(null);
+  const [users, setUser] = useState(process.env.NEXT_PUBLIC_ADMIN_ID);
+
+useEffect(()=>{
+  const user = localStorage.getItem('myuser');
+  if(user){
+    setAdmin(JSON.parse(user));
+  }
+},[]);
+
+if(admin == null){
+  return <Error statusCode={404}/>
+}
+
+if(admin.email !== users){
+  return <Error statusCode={404} />
+}
   return (
     <ThemeProvider theme={theme}>
       <FullLayout>

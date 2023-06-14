@@ -10,16 +10,10 @@ import {
   Chip,
 } from "@mui/material";
 import BaseCard from "../baseCard/BaseCard";
+import Link from "next/link";
 
 const ProductPerfomance = ({products}) => {
 
-  useEffect(()=>{
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    console.log(products);
-    return () => controller.abort();
-  }, [])
 
   return (
     <BaseCard title="All Products">
@@ -52,9 +46,14 @@ const ProductPerfomance = ({products}) => {
                 Size/Color
               </Typography>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="left">
               <Typography color="textSecondary" variant="h6">
                 Price
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography color="textSecondary" variant="h6">
+                Edit
               </Typography>
             </TableCell>
           </TableRow>
@@ -69,7 +68,7 @@ const ProductPerfomance = ({products}) => {
                     fontWeight: "500",
                   }}
                 >
-                  {product.title}
+                  {product.title.slice(0,5)+'...'}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -86,7 +85,7 @@ const ProductPerfomance = ({products}) => {
                         fontWeight: "600",
                       }}
                     >
-                      {product.slug}
+                      {product.slug.slice(0,2)+'..'}
                     </Typography>
                   </Box>
                 </Box>
@@ -99,8 +98,15 @@ const ProductPerfomance = ({products}) => {
               <TableCell>
                 <Typography variant="h6">{product.size}/{product.color}</Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
                 <Typography variant="h6">₹{product.price}</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="h6">
+                  <Link href={`/updateproduct?id=${product._id}`}>
+                <button className="bg-orange-600 px-2 py-1 m-0 rounded-sm text-white hover:bg-orange-500">Edit</button>
+                </Link>
+                </Typography>
               </TableCell>
             </TableRow>
           ))}

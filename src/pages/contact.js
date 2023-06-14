@@ -5,7 +5,7 @@ function Contact() {
   return (
     <>
       <Head>
-        <title>Contact Us - Shopnation.com</title>
+        <title>Contact Us - Shopnation.in</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
       </Head>
       <section className="text-gray-600 body-font relative min-h-screen bg-slate-100 shadow-xl mb-10 sm:m-5 sm:w-3/4 sm:mx-auto ">

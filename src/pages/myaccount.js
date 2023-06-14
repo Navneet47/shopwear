@@ -21,7 +21,7 @@ const MyAccount = () => {
   useEffect(() => {
     const myuser = JSON.parse(localStorage.getItem('myuser'));
     if (!myuser) {
-      router.push("/")
+      router.push("/login")
     }
     if (myuser && myuser.token) {
       setUser(myuser)
@@ -148,7 +148,7 @@ const MyAccount = () => {
         theme="light"
       />
             <Head>
-        <title>Myaccount - Shopnation.com</title>
+        <title>Myaccount - Shopnation.in</title>
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
       </Head>
       <h1 className='text-3xl text-center font-bold mb-10'>Account Details</h1>

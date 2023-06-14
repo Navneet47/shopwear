@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Head from 'next/head';
 
 function Orders() {
 
@@ -29,10 +30,16 @@ function Orders() {
   
   return (
     <>
+    <Head>
+    <title>My Orders - Shopnation.in</title>
+                <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0" />
+    </Head>
+    <header>
       <div>
         <h1 className='font-bold text-xl p-8 text-center'>My Orders</h1>
         {orders.length === 0 && <h4 className='font-bold text-xl pb-2 text-center'>You have not ordered anything!</h4>}
       </div>
+    </header>
       <main className='pb-40'>
       <div className='container min-h-screen border-solid border-4 mx-auto'>
         
