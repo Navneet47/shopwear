@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -279,69 +278,3 @@ function Checkout({ cart, clearCart, addToCart, removeFromCart, subTotal }) {
 }
 
 export default Checkout;
-
-//Paytm integration
- //  async function initiatePayment() {
-  //     let oid = Math.floor(Math.random() * Date.now())
-  //     //Get a transaction token
-  //     const data = { cart, subTotal, oid, email: userDetails.email, name: userDetails.name, address: userDetails.address, pincode: userDetails.pincode, phone: userDetails.phone};
-  //     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`,{
-  //       method: 'POST',
-  //       headers:{
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     })
-  //     let txnRes = await a.json()
-  //      console.log(txnRes);
-  //      let txnToken = txnRes.txnToken;
-
-
-  //     let config = {
-  //       "root": "",
-  //       "style": {
-  //         "bodyColor": "",
-  //         "themeBackgroundColor": "",
-  //         "themeColor": "",
-  //         "headerBackgroundColor": "",
-  //         "headerColor": "",
-  //         "errorColor": "",
-  //         "successColor": ""
-  //       },
-  //       "flow": "DEFAULT",
-  //       "data": {
-  //         "orderId": oid,
-  //         "token": txnToken,
-  //         "tokenType": "TXN_TOKEN",
-  //         "amount": subTotal,
-  //         "userDetail": {
-  //           "mobileNumber": "",
-  //           "name": ""
-  //         }
-  //       },
-  //       "merchant": {
-  //         "mid": "",
-  //         "name": "",
-  //         "redirect": true
-  //       },
-  //       "labels": {},
-  //       "payMode": {
-  //         "labels": {},
-  //         "filter": [],
-  //         "order": []
-  //       },
-  //       "handler": {
-  //         "notifyMerchant": function (eventName, data) {
-  //           console.log("notifyMerchant handler function called");
-  //           console.log("eventName =>", eventName);
-  //           console.log("data => ", data);
-  //         }
-  //       }
-  //     };
-
-  //         window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
-  //           window.Paytm.CheckoutJS.invoke();
-  //         }).catch(function (error) {
-  //           console.log("error => ", error);
-  //         })
-  //   }

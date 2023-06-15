@@ -4,13 +4,27 @@ import Product from "../../../models/Product";
 import connectDb from "../../../middleware/mongoose";
 
 const handler = async (req, res) => {
+
+    const {ID,title,desc,category,size,color,price,qty,salePrice,slug} = req.body.product;
+    const image = req.body.image;
+    const highlight = req.body.highlight;
+    let img;
+    let highlights;
+    if(!Array.isArray(image)){
+        img = image.split(",");
+    }
+    if(!Array.isArray(highlight)){
+        highlights = highlight.split(",");
+    }
     if (req.method === 'POST') {
-        await Product.findOneAndUpdate({_id: req.body.ID}, {title:req.body.title, slug: req.body.slug, desc: req.body.description, highlight: req.body.highlight, img:req.body.img, category:req.body.category, size:req.body.size, color:req.body.color, price:req.body.price, availableQty: req.body.qty, salePrice:req.body.salePrice});
-        res.status(200).json({success: "Product Updated Successfully"})
+        await Product.findOneAndUpdate({_id: ID}, {title: title, slug: slug, desc: desc, category: category, size: size, color: color, price: parseInt(price), availableQty: parseInt(qty), salePrice:parseInt(salePrice), img: img ? img : image, highlight: highlights ? highlights : highlight });
+        res.status(200).json({success: true, msg: "Product Updated Successfully"});
+        return
     } else {
-        res.status(400).json({ error: "This method is not allowed" })
+        res.status(400).json({ success: false, msg: "Error When updating" })
 
     }
+    res.status(200).json({product:req.body.product, image:req.body.image, highlight:req.body.highlight})
 }
 
 export default connectDb(handler);

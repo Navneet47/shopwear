@@ -13,8 +13,9 @@ function Forgot() {
   const [cpassword, setCpassword] = useState('');
 
   const router = useRouter();
+
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('myuser')) {
       router.push('/');
     }
   }, []);

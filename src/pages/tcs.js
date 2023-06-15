@@ -16,17 +16,17 @@ const Tcs = () => {
      </div>
      <div className='flex flex-col gap-2 max-w-[80%] justify-start items-start m-auto mt-4'>
           <p className='text-xl font-bold'>Cookies</p>
-          <p>We employ the use of cookies. By accessing codeswear.com, you agreed to use cookies in agreement with the Codeswear&apos;s Privacy Policy. Most interactive websites use cookies to let us retrieve the user&apos;s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
+          <p>We employ the use of cookies. By accessing shopnation.com, you agreed to use cookies in agreement with the shopnation&apos;s Privacy Policy. Most interactive websites use cookies to let us retrieve the user&apos;s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
      </div>
      <div className='flex flex-col gap-2 max-w-[80%] justify-start items-start m-auto mt-4'>
           <p className='text-xl font-bold'>License</p>
-          <p>Unless otherwise stated, Codeswear and/or its licensors own the intellectual property rights for all material on codeswear.com. All intellectual property rights are reserved. You may access this from codeswear.com for your own personal use subjected to restrictions set in these terms and conditions.</p>
+          <p>Unless otherwise stated, shopnation and/or its licensors own the intellectual property rights for all material on shopnation.com. All intellectual property rights are reserved. You may access this from shopnation.com for your own personal use subjected to restrictions set in these terms and conditions.</p>
           <p className='font-semibold'>You must not:</p>
           <ul className=' justify-start items-start ml-6 list-disc'>
-            <li>Republish material from codeswear.com</li>
-            <li>Sell, rent or sub-license material from codeswear.com</li>
-            <li>Reproduce, duplicate or copy material from codeswear.com</li>
-            <li>Redistribute content from codeswear.com</li>
+            <li>Republish material from shopnation.com</li>
+            <li>Sell, rent or sub-license material from shopnation.com</li>
+            <li>Reproduce, duplicate or copy material from shopnation.com</li>
+            <li>Redistribute content from shopnation.com</li>
           </ul>
      </div>
      <div className='flex flex-col gap-2 max-w-[80%] justify-start items-start m-auto mt-4'>

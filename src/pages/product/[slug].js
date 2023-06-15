@@ -11,7 +11,7 @@ import Head from 'next/head';
 
 function Slug({ buyNow, addToCart, product, variants, error }) {
   const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'multi', 'pink'];
-  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL", "STANDARD", "LARGE", "6", "7", "8", "9", "10", "11"];
   const [images, setImages] = useState(product.img);
   const [activeImg, setActiveImage] = useState(product.img[0])
   const [btn, setBtn] = useState('');

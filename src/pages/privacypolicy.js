@@ -25,7 +25,7 @@ const Privacypolicy = () => {
                         <p>For the purposes of this Privacy Policy:</p>
                         <ul className=' justify-start items-start list-none'>
                             <li><span className='font-bold'>Account</span> means a unique account created for You to access our Service or parts of our Service.</li>
-                            <li><span className='font-bold'>Company</span> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to Codeswear, Jammu, J&K.</li>
+                            <li><span className='font-bold'>Company</span> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to Shponation, Jammu, J&K.</li>
                             <li><span className='font-bold'>Cookies</span> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.
                             </li>
                             <li><span className='font-bold'>Country</span> refers to: Uttar Pradesh, India</li>

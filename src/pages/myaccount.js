@@ -188,7 +188,7 @@ const MyAccount = () => {
           </div>
         </div>
       </div>
-      <button onClick={handleUserSubmit} className="m-2 mb-5 disabled:bg-orange-200 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Submit</button>
+      <button onClick={handleUserSubmit} className="m-2 mb-5 disabled:bg-orange-200 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Update</button>
 
       <h2 className='text-xl font-semibold'>2. Change Password</h2>
       <div className="mx-auto flex my-2 flex-wrap">

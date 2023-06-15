@@ -1,13 +1,11 @@
-import Link from "next/link";
 import React, { useState } from "react";
-import Image from "next/image";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Head from "next/head";
+import Products from "@/Components/Products";
 
 function Sneakers({ products, allCount }) {
-    const color = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'pink'];
     const [productList, setProductList] = useState(products)
     const [count, setCount] = useState(9);
 
@@ -59,29 +57,7 @@ function Sneakers({ products, allCount }) {
                 <section id="Sneakers"
                     className="w-fit min-h-screen mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
                     {productList.map((item) => {
-                        return <Link passHref={true} key={item._id} href={`/product/${item.slug}`}>
-                            <div className="w-72 bg-slate-100 shadow-md rounded-xl hover:shadow-xl">
-                                <Image loading="lazy" style={{ maxHeight: "22rem" }} width={500} height={100} src={item.img[0]}
-                                    alt="Tshirt image" className="h-90 w-72 object-cover rounded-t-xl" />
-                                <div className='mt-2 text-md  text-gray-900 pl-2'>
-                                    {color.map((val, index) => {
-                                        if (item.color.includes(val)) {
-                                            return <button key={index} className={`border-2 border-gray-300 ml-1 ${val == 'red' && `bg-red-500`} ${val == 'white' || val == 'black' ? `bg-${val}` : `bg-${val}-500`} rounded-full w-6 h-6 focus:outline-none`}></button>
-                                        }
-                                    })}
-                                </div>
-                                <div className="px-4 py-3 w-72">
-                                    <span className="text-gray-400 mr-3 uppercase text-xs">Tshirt</span>
-                                    <p className="text-lg font-bold text-black truncate block capitalize">{item.title.slice(0, 30)}</p>
-                                    <div className="flex items-center">
-                                        <p className="text-lg font-semibold text-black cursor-auto my-3">₹{item.salePrice ? item.salePrice : item.price}</p>
-                                        <del>
-                                            <p className={`text-sm ${item.salePrice ? "" : "hidden"} text-gray-600 cursor-auto ml-2`}>₹{item.salePrice && item.price}</p>
-                                        </del>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
+                        return <Products key={item._id} item= {item} />
                     })}
                 </section>
                 </main>

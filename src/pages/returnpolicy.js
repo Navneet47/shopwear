@@ -20,11 +20,11 @@ const Returnpolicy = () => {
                     <section id='Cancellation Policy' className='mx-auto w-5/6 text-md'>
                         <div className='flex flex-col'>
                             <p className='mx-auto text-2xl font-bold'>Cancellation Policy</p>
-                            <p className='pb-5 pt-5 mx-auto'>For Cancellations please contact the us via contact us link.</p>
+                            <p className='pt-5 mx-auto'>For Cancellations please contact the us via contact us link.</p>
                             <p className='mx-auto'>Requests received later than 3 business days prior to the delivery of the product will not be processed.</p>
                         </div>
                     </section>
-                    <section id='Refund Policy' className='mx-auto w-5/6 text-md mt-10'>
+                    <section id='Refund Policy' className='mx-auto w-5/6 text-md mt-8'>
                         <div className='flex flex-col'>
                             <p className='mx-auto text-2xl font-bold'>Refund Policy</p>
                             <p className='mx-auto pt-5'>We will try our best to create the best products for our customers. Images are only for representational purpose and are taken in a certain lighting conditions. Colour shade may slightly vary as per the lighting conditions. In case any you are not completely satisfied with our products due to the defect in the product we can review your case and provide a refund. If paid online, refunds will be issued to the original payment method provided at the time of purchase and in case of COD, refund will be made to the UPI ID provided by the customer.</p>
