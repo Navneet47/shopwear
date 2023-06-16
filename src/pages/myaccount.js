@@ -102,7 +102,7 @@ const MyAccount = () => {
       })
       res = await request.json();
     }else{
-      res = {success: false}
+      res = {success: false, error:"Password dosen't Match!"}
     }
     if(res.success){
       toast.success('Successfully Updated Password', {
@@ -119,7 +119,7 @@ const MyAccount = () => {
       setNewPassword('');
       setConfirmPassword('');
     }else{
-      toast.error('Error Updating Password', {
+      toast.error(res.error, {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -132,6 +132,8 @@ const MyAccount = () => {
 
     }
   }
+
+
 
   return (
     <div className='container mx-auto my-9 pb-10'>
