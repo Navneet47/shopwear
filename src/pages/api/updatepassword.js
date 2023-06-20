@@ -16,10 +16,10 @@ const handler = async(req,res)=>{
             res.status(200).json({ success: true});
             return;
         }else {
-            res.status(200).json({ success: false});
+            res.status(200).json({ success: false, error:"Error Updating Password"});
         }
     } else {
-        res.status(400).json({ error: "error"})
+        res.status(400).json({ success:false, error: "error"})
     }
 
 }
