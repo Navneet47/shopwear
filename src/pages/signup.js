@@ -37,7 +37,7 @@ function Signup() {
     let response = await res.json();
 
     if (!response.success) {
-      toast.success("Email Already exists", {
+      toast.error("User Already exists", {
         position: "top-left",
         autoClose: 2000,
         hideProgressBar: false,

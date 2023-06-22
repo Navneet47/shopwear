@@ -48,12 +48,16 @@ export default function App({ Component, pageProps }) {
     let subT = 0;
     let keys = Object.keys(myCart);
     for (let i = 0; i < keys.length; i++) {
-      subT += myCart[keys[i]].price * myCart[keys[i]].qty
+      if(myCart[keys[i]].salePrice){
+        subT += myCart[keys[i]].salePrice * myCart[keys[i]].qty
+      } else {
+        subT += myCart[keys[i]].price * myCart[keys[i]].qty
+      }
     }
     setSubTotal(subT);
   }
 
-  const addToCart = (itemCode, qty, price, name, size, variant) => {
+  const addToCart = (itemCode, qty, price, name, size, variant, salePrice) => {
     if (Object.keys(cart).length == 0) {
       setKey(Math.random())
     }
@@ -61,7 +65,7 @@ export default function App({ Component, pageProps }) {
     if (itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty + qty;
     } else {
-      newCart[itemCode] = { qty: 1, price, name, size, variant }
+      newCart[itemCode] = { qty: 1, price, name, size, variant, salePrice }
     }
     setCart(newCart);
     saveCart(newCart);
@@ -91,9 +95,9 @@ export default function App({ Component, pageProps }) {
     router.push('/');
   }
 
-  const buyNow = (itemCode, qty, price, name, size, variant) => {
+  const buyNow = (itemCode, qty, price, name, size, variant, salePrice) => {
     let newCart = {}
-    newCart[itemCode] = { qty: 1, price, name, size, variant };
+    newCart[itemCode] = { qty: 1, price, name, size, variant, salePrice };
     setCart(newCart);
     saveCart(newCart);
     router.push("/checkout");

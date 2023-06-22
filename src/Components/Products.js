@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 const Product = (props) => {
 
-    const { _id, img, color, title, price, salePrice, slug } = props.item;
-    const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'pink'];
+    const { _id, img, color, title, price, salePrice, slug, category } = props.item;
+    const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'pink','orange','gray'];
 
 
     return (
@@ -21,7 +21,7 @@ const Product = (props) => {
                     })}
                 </div>
                 <div className="px-4 py-3 w-72">
-                    <span className="text-gray-400 mr-3 uppercase text-xs">Tshirt</span>
+                    <span className="text-gray-400 mr-3 uppercase text-xs">{category}</span>
                     <p className="text-lg font-bold text-black truncate block capitalize">{title.slice(0, 30)}</p>
                     <div className="flex items-center">
                         <p className="text-lg font-semibold text-black cursor-auto my-3">₹{salePrice ? salePrice : price}</p>

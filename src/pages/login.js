@@ -41,7 +41,7 @@ function Login() {
       localStorage.setItem('myuser', JSON.stringify({ token: response.token, email: response.email }));
       toast.success('Logged in successfully', {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

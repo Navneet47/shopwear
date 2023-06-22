@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme/theme";
 import FullLayout from "@/layouts/FullLayout";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Grid,
   Stack,
@@ -56,8 +58,30 @@ const Add = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({product:form,img:info.img, highlight: info.highlight })
-    })
-    let res = req.json();
+    }).then((t)=> t.json())
+    if(req.success){
+      toast.success(req.msg, {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    }else {
+      toast.error(req.msg, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+    }
   }
 
 

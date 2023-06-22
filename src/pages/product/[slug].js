@@ -10,10 +10,10 @@ import Head from 'next/head';
 
 
 function Slug({ buyNow, addToCart, product, variants, error }) {
-  const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'multi', 'pink'];
-  const sizes = ["XS", "S", "M", "L", "XL", "XXL", "STANDARD", "LARGE", "6", "7", "8", "9", "10", "11"];
+  const colors = ['red', 'blue', 'black', 'green', 'yellow', 'white', 'purple', 'brown', 'multi', 'pink','orange','gray'];
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL", "STANDARD", "MEDIUM", "LARGE", "6", "7", "8", "9", "10", "11"];
   const [images, setImages] = useState(product.img);
-  const [activeImg, setActiveImage] = useState(product.img[0])
+  const [activeImg, setActiveImage] = useState(images[0])
   const [btn, setBtn] = useState('');
   const router = useRouter();
   const { slug } = router.query;
@@ -70,8 +70,17 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
   }
 
 
-  const refreshVariant = (newColor, newSize) => {
+  const refreshVariant = async (newColor, newSize) => {
     let url = `${process.env.NEXT_PUBLIC_HOST}/product/${variants[newColor][newSize]['slug']}`;
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getproduct`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({slug: variants[newColor][newSize]['slug']}),
+    }).then((t)=>t.json());
+    setImages(res.img);
+    setActiveImage(res.img[0]);
     router.push(url);
   }
 
@@ -106,7 +115,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <div className='min-h-screen py-10 flex flex-col justify-between lg:flex-row gap-16 lg:items-center '>
             <div className='flex flex-col gap-6 lg:w-2/4'>
-              <Image width={600} height={100} src={activeImg} alt="" className='w-full h-full border object-cover rounded-xl' />
+              <Image width={600} height={100} src={activeImg} alt={product.title.slice(0,15)+"image"} className='w-full h-full border object-cover rounded-xl' />
               <div className='flex flex-row justify-between h-24'>
                 {images.map((item, index) => {
                   return <Image width={600} height={100} key={index} src={item} alt="" className='w-24 h-24 rounded-md cursor-pointer' onClick={() => setActiveImage(item)} />
@@ -214,9 +223,9 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
               </div>
               <div className="flex">
                 <button disabled={product.availableQty == 0} onClick={() => {
-                  addToCart(product.slug, 1, product.price, product.title, product.size, product.color); toast.success('Item added to cart', {
+                  addToCart(product.slug, 1, product.price, product.title, product.size, product.color, product.salePrice); toast.success('Item added to cart', {
                     position: "top-center",
-                    autoClose: 2500,
+                    autoClose: 500,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
@@ -225,7 +234,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
                     theme: "light",
                   });
                 }} className="flex text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Add to Cart</button>
-                <button disabled={product.availableQty == 0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
+                <button disabled={product.availableQty == 0} onClick={() => { buyNow(product.slug, 1, product.price, product.title, product.size, product.color, product.salePrice) }} className="flex ml-4 text-white disabled:bg-orange-300 bg-orange-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-orange-600 rounded text-sm">Buy Now</button>
                 {/* <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>

@@ -39,7 +39,6 @@ export default function Home({ products }) {
       link: '/tshirts',
     },
     {
-      // img:'https://img1.etsystatic.com/198/0/11971667/il_fullxfull.1278107315_fcw0.jpg',
       img: 'https://www.giftsforyounow.com/images/products/2139770LM-2-L.jpg',
       name: 'Mugs',
       alt: 'mug-image',
@@ -78,7 +77,7 @@ export default function Home({ products }) {
     <>
       <Head>
         <title>Online Shopping - Buy Tshirts,Hoodies,Mugs,Sneakers... </title>
-        <meta name="description" content="ShopWear.com - shop the cloth" />
+        <meta name="description" content="Shopnation.com - Shop Anything you want from tshirts to shoodies to mugs and lots more" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"></link>
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"></link>
@@ -146,7 +145,7 @@ export default function Home({ products }) {
                                 <h3 className="text-sm text-gray-700 ml-2">
                                   <Link href={`/product/${item.slug}`}>
                                     <span aria-hidden="true" className="absolute inset-0"></span>
-                                    {item.title}
+                                    {item.title.slice(0,15)+"..."}
                                   </Link>
                                 </h3>
                                 <div className='flex gap-2'>
@@ -237,7 +236,7 @@ export default function Home({ products }) {
   Object.keys(tshirt).map((item) => {
               result.push(tshirt[item])
             })
-            let newResult = result.slice(0, 5);
+            let newResult = result.slice(0, 3);
 
             return {
               props: {products: JSON.parse(JSON.stringify(newResult)) }, // will be passed to the page component as props

@@ -16,7 +16,7 @@ const handler = async (req, res) => {
                 desc: products[i].desc,
                 img: image,
                 category: products[i].category,
-                size: products[i].size,
+                size: products[i].size.toUpperCase(),
                 color: products[i].color,
                 price: products[i].price,
                 availableQty: products[i].availableQty,
@@ -24,10 +24,10 @@ const handler = async (req, res) => {
             })
             await pro.save();
         }
-        res.status(200).json({success: "Product Added Successfully"});
+        res.status(200).json({success: true, msg:"Product Added Successfully"});
         return
     } else {
-        res.status(400).json({ error: "This method is not allowed" });
+        res.status(400).json({success: false, msg: "This method is not allowed" });
         return
 
     }

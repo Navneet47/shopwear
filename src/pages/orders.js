@@ -43,7 +43,7 @@ function Orders() {
       <main className='pb-40'>
       <div className='container min-h-screen border-solid border-4 mx-auto'>
         
-        <div className="relative overflow-x-auto">
+        <div className="relative min-h-screen overflow-x-auto">
           <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
               <tr>
@@ -54,13 +54,16 @@ function Orders() {
                   Email
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Status
+                  Payment
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Details
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Amount
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  status
                 </th>
               </tr>
             </thead>
@@ -77,11 +80,14 @@ function Orders() {
                   {item.status}
                 </th>
                 <td className="px-6 py-4 hover:text-orange-500">
-                  <Link href={'/order?id=' + item._id}>
+                  <Link href={'/vieworder?id=' + item._id}>
                     Details</Link>
                 </td>
                 <td className="px-6 py-4">
                 ₹{item.amount}
+                </td>
+                <td className="px-6 py-4">
+                {item.deliveryStatus}
                 </td>
               </tr>
               })

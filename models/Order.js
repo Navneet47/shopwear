@@ -12,8 +12,8 @@ const OrderSchema = new mongoose.Schema({
     name: {type: String, required: true},
     phone: {type: String, required: true},
     amount: {type: Number, required: true},
-    status: {type: String, default: 'Initiated', required: true},
-    deliveryStatus: {type: String, default: 'unshipped', required: true},
+    status: {type: String, default: 'Unpaid', required: true},
+    deliveryStatus: {type: String, default: 'processing', required: true},
     
 }, {timestamps: true});
 

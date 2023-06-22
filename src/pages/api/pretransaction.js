@@ -23,17 +23,30 @@ async function handler(req, res) {
             return
          }
         for(let item in bodyDetails.products.cart){
-            sumTotal += bodyDetails.products.cart[item].price * bodyDetails.products.cart[item].qty 
-             product = await Product.findOne({slug: item})
+            if(bodyDetails.products.cart[item].salePrice){
+                sumTotal += bodyDetails.products.cart[item].salePrice * bodyDetails.products.cart[item].qty 
+                product = await Product.findOne({slug: item})
+            } else {
+                sumTotal += bodyDetails.products.cart[item].price * bodyDetails.products.cart[item].qty 
+                product = await Product.findOne({slug: item})
+            }
              //check if the cart items are out of stock
              if(product.availableQty < bodyDetails.products.cart[item].qty){
                 res.status(200).json({success:false, error: "Some items in your cart went out of stock and have been removed from your cart, Please try again", cartClear: true})
                 return
              }
-             if(product.price != bodyDetails.products.cart[item].price){
-                res.status(200).json({success:false, error: "The Price of some items in your cart have changed. Please try again!", cartClear: true})
-                return
-            }
+             if(bodyDetails.products.cart[item].salePrice){
+                 if(product.salePrice != bodyDetails.products.cart[item].salePrice){
+                    res.status(200).json({success:false, error: "The Price of some items in your cart have changed. Please try again!", cartClear: true})
+                    return
+                }
+             } else {
+
+                 if(product.price != bodyDetails.products.cart[item].price){
+                    res.status(200).json({success:false, error: "The Price of some items in your cart have changed. Please try again!", cartClear: true})
+                    return
+                }
+             }
         }
         
         if(sumTotal !== bodyDetails.products.subTotal){

@@ -27,20 +27,20 @@ function MyOrder({ order, clearCart }) {
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNATION.COM</h2>
+              <p className="leading-relaxed mb-4 text-lg font-semibold">Yayy! Your order has been successfully placed.</p>
+              <p className="leading-relaxed mb-4">Order placed on: {date && date.toLocaleString("en-IN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               <h1 className="text-gray-900 text-xl md:text-3xl title-font font-medium mb-4">Order Id: #{order.orderId}</h1>
               <div className="flex mb-4">
                 <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Description</a>
                 <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Quantity</a>
-                <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Total</a>
+                <a className="flex-grow text-center text-orange-500 py-2 text-lg px-1">Item Price</a>
               </div>
-              <p className="leading-relaxed mb-4 text-lg font-semibold">Yayy! Your order has been successfully placed.</p>
-              <p className="leading-relaxed mb-4">Order placed on: {date && date.toLocaleString("en-IN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               {Object.keys(products).map((item) => {
 
                 return <div key={item} className="flex border-t border-gray-200 py-2">
-                  <span className="text-gray-500">{products[item].name}</span>
+                  <span className="m-auto text-gray-500 break-words w-24">{products[item].name.slice(0,20)+"..."} ({products[item].size}/{products[item].variant[0].toUpperCase() + products[item].variant.slice(1)})</span>
                   <span className="m-auto text-gray-900">{products[item].qty}</span>
-                  <span className="m-auto text-gray-900">₹{products[item].price * products[item].qty}</span>
+                  <span className="m-auto text-gray-900">₹{products[item].salePrice ? products[item].salePrice : products[item].price}</span>
                 </div>
               })
               }

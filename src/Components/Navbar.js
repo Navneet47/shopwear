@@ -2,10 +2,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import { MdAccountCircle } from 'react-icons/md';
-import { BsTrash2, BsTrashFill } from 'react-icons/bs';
+import { BsTrashFill } from 'react-icons/bs';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subTotal, sideBarCheck }) {
     const [menu, setMenu] = useState(false);
@@ -31,17 +29,6 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
             if (res.data.msg == 'jwt expired') {
                 setExp(false);
                 localStorage.removeItem('myuser');
-                router.push('/login');
-                toast.error('Token Expired, Please Login again!', {
-                    position: "top-left",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
             } else {
                 setExp(true);
             }
@@ -74,18 +61,6 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
     return (
         <>
             <nav className="bg-gray-800 z-30 sticky top-0">
-                <ToastContainer
-                    position="top-left"
-                    autoClose={4000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-between">
                         <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -144,7 +119,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                             {/* <!-- Profile dropdown --> */}
                             <div className="relative ml-3">
                                 <div>
-                                    {user.value ? <button disabled={!expired} onClick={handleMenu} type="button" className="flex rounded-full disabled:bg-orange-300 bg-orange-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    {user.value && expired ? <button disabled={!expired} onClick={handleMenu} type="button" className="flex rounded-full disabled:bg-orange-300 bg-orange-700 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                         <span className="sr-only">Open user menu</span>
                                         <MdAccountCircle className='h-8 w-8 rounded-full' />
                                     </button> : <Link href={"/login"}>
@@ -245,7 +220,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                                             <h3>
                                                                                 {cart[item].name}
                                                                             </h3>
-                                                                            <p className="ml-4">₹{cart[item].price}</p>
+                                                                            <p className="ml-4">₹{cart[item].salePrice ? cart[item].salePrice : cart[item].price}</p>
                                                                         </div>
                                                                         <p className="mt-1 text-sm text-gray-500">Color: {cart[item].variant}</p>
                                                                         <p className="mt-1 text-sm text-gray-500">Size: {cart[item].size}</p>
@@ -255,7 +230,7 @@ function Navbar({ logout, user, cart, addToCart, removeFromCart, clearCart, subT
                                                                             <p className='text-gray-500 mr-2'>Qty</p>
                                                                             {cart[item].qty > 1 ? <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> - </span> : <span onClick={() => { removeFromCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-l bg-gray-100 py-1.5 px-3.5 duration-100 hover:bg-orange-500 hover:text-orange-50"> {<BsTrashFill/>} </span>}
                                                                             <p className="py-1 px-3.5 border bg-white text-center text-xs outline-none">{cart[item].qty}</p>
-                                                                            <span onClick={() => { addToCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant) }} className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> + </span>
+                                                                            <span onClick={() => { addToCart(item, 1, cart[item].price, cart[item].name, cart[item].size, cart[item].variant, cart[item].salePrice) }} className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-orange-500 hover:text-orange-50"> + </span>
                                                                         </div>
                                                                     </div>
                                                                 </div>

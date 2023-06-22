@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.0",
     "next": "13.3.1",
+    "next-swc-win32-x64-msvc": "^0.0.1-security",
     "nodemailer": "^6.9.3",
     "paytmchecksum": "^1.5.0",
     "razorpay": "^2.8.6",
@@ -36,7 +37,8 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-toastify": "^9.1.2",
     "react-top-loading-bar": "^2.3.1",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
