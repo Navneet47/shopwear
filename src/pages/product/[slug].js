@@ -115,7 +115,7 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
         <div className="min-h-screen lg:w-4/5 mx-auto flex flex-wrap">
           <div className='py-2 flex flex-col justify-between lg:flex-row gap-10 lg:items-center'>
             <div className='flex flex-col gap-6 lg:w-2/4'>
-              <Image width={600} height={100} src={activeImg} alt={product.title.slice(0,15)+"image"} className='w-full h-full border object-cover rounded-xl' />
+              <Image width={600} height={100} src={activeImg} alt={product.title.slice(0,15)+"image"} className='w-full h-full border object-contain rounded-xl' />
               <div className='flex flex-row justify-between h-24'>
                 {images.map((item, index) => {
                   return <Image width={600} height={100} key={index} src={item} alt="" className='w-24 h-24 rounded-md cursor-pointer border-4' onClick={() => setActiveImage(item)} />
@@ -187,15 +187,6 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
                       }
                     }
                   })}
-                  {/* {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button onClick={() => { refreshVariant('white', size) }} className={`border-2 ${color === 'white' ? 'border-black' : 'border-gray-300'} rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button onClick={() => { refreshVariant('red', size) }} className={`border-2 ${color === 'red' ? 'border-black' : 'border-gray-300'} ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button onClick={() => { refreshVariant('blue', size) }} className={`border-2 ${color === 'blue' ? 'border-black' : 'border-gray-300'} ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button onClick={() => { refreshVariant('green', size) }} className={`border-2 ${color === 'green' ? 'border-black' : 'border-gray-300'} ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button onClick={() => { refreshVariant('black', size) }} className={`border-2 ${color === 'black' ? 'border-black' : 'border-gray-300'} ml-1 bg-black rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button onClick={() => { refreshVariant('yellow', size) }} className={`border-2 ${color === 'yellow' ? 'border-black' : 'border-gray-300'} ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button onClick={() => { refreshVariant('purple', size) }} className={`border-2 ${color === 'purple' ? 'border-black' : 'border-gray-300'} ml-1 bg-purple-500 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('brown') && Object.keys(variants['brown']).includes(size) && <button onClick={() => { refreshVariant('brown', size) }} className={`border-2 ${color === 'brown' ? 'border-black' : 'border-gray-300'} ml-1 bg-amber-900 rounded-full w-6 h-6 focus:outline-none`}></button>}
-                  {Object.keys(variants).includes('pink') && Object.keys(variants['pink']).includes(size) && <button onClick={() => { refreshVariant('pink', size) }} className={`border-2 ${color === 'pink' ? 'border-black' : 'border-gray-300'} ml-1 bg-pink-500 rounded-full w-6 h-6 focus:outline-none`}></button>} */}
                 </div>
               </div>
               <div className="flex mt-6 items-center mb-6">
@@ -206,14 +197,6 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
                       return <button key={siz} onClick={() => { handleClass(siz); refreshVariant(color, siz); }} className={`${btn === siz ? `bg-orange-100` : ""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>{siz}</button>
                     }
                   })}
-                  {/* <select value={size} onChange={(e) => { refreshVariant(color, e.target.value) }} className={`rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-500 text-base pl-3 pr-10 cursor-pointer`}> */}
-                  {/* {color && Object.keys(variants[color]).includes('S') && <button  onClick={() => { handleClass("S"); refreshVariant(color, "S"); }} className={`${btn === "S" ? `bg-orange-300`:""} text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>S</button> }
-                      {color && Object.keys(variants[color]).includes('XS') && <button  onClick={() => { handleClass("XS"); refreshVariant(color, "XS"); }} className={` ${btn === "XS" ? `bg-orange-300`:""} XS text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`} >XS</button> }
-                      {color && Object.keys(variants[color]).includes('M') && <button  onClick={() => { handleClass("M"); refreshVariant(color, "M"); }} className={` ${btn === "M" ? `bg-orange-300`:""} M text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>M</button> }
-                      {color && Object.keys(variants[color]).includes('L') && <button  onClick={() => { handleClass("L"); refreshVariant(color, "L"); }} className={` L text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>L</button> }
-                      {color && Object.keys(variants[color]).includes('XL') && <button  onClick={() => { handleClass("XL"); refreshVariant(color, "XL"); }} className={` XL text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XL</button> }
-                      {color && Object.keys(variants[color]).includes('XXL') && <button  onClick={() => { handleClass("XXL"); refreshVariant(color, "XXL"); }} className={` XXl text-base p-1 pr-2 pl-2 ml-2 cursor-pointer rounded border appearance-none border-gray-300`}>XXL</button>} */}
-                  {/* </select> */}
                 </div>
               </div>
               <div className='flex flex-row pb-4'>
