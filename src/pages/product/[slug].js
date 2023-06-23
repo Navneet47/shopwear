@@ -112,13 +112,13 @@ function Slug({ buyNow, addToCart, product, variants, error }) {
         theme="light"
       />
       <div className="container px-5 py-5 mx-auto">
-        <div className="lg:w-4/5 mx-auto flex flex-wrap">
-          <div className='min-h-screen py-10 flex flex-col justify-between lg:flex-row gap-16 lg:items-center '>
+        <div className="min-h-screen lg:w-4/5 mx-auto flex flex-wrap">
+          <div className='py-2 flex flex-col justify-between lg:flex-row gap-10 lg:items-center'>
             <div className='flex flex-col gap-6 lg:w-2/4'>
               <Image width={600} height={100} src={activeImg} alt={product.title.slice(0,15)+"image"} className='w-full h-full border object-cover rounded-xl' />
               <div className='flex flex-row justify-between h-24'>
                 {images.map((item, index) => {
-                  return <Image width={600} height={100} key={index} src={item} alt="" className='w-24 h-24 rounded-md cursor-pointer' onClick={() => setActiveImage(item)} />
+                  return <Image width={600} height={100} key={index} src={item} alt="" className='w-24 h-24 rounded-md cursor-pointer border-4' onClick={() => setActiveImage(item)} />
                 })}
               </div>
             </div>

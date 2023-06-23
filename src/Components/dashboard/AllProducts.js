@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Box,
@@ -11,12 +11,61 @@ import {
 } from "@mui/material";
 import BaseCard from "../baseCard/BaseCard";
 import Link from "next/link";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Image from "next/image";
 
-const ProductPerfomance = ({products}) => {
+const ProductPerfomance = ({products, count}) => {
 
+    
+  const [productList, setProductList] = useState(products);
+  const allCount = count;
+  const [counts, setCount] = useState(9);
 
-  return (
-    <BaseCard title="All Products">
+  const fetchData = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_HOST}/api/getproducts?count=${counts + 9}`,
+      {
+        method: "POST",
+        header: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({category:''})
+      }
+    ).then((t) => t.json());
+    setCount(count + 9);
+    setProductList(res);
+  };
+
+  return (<>
+    <BaseCard title="All productList">
+    <InfiniteScroll 
+        dataLength={productList.length}
+        next={() => {
+          setTimeout(() => {
+            fetchData();
+          }, 1000);
+        }}
+        hasMore={allCount !== productList.length}
+        loader={
+          <h4 className="text-2xl text-center text-orange-600 mt-5 mb-5">
+            Loading...
+          </h4>
+        }
+        endMessage={
+          <p
+            style={{
+              textAlign: "center",
+              marginTop: "50px",
+              marginBottom: "50px",
+            }}
+          >
+            <b className="bg-slate-200 p-2">
+              You have reached the end of the list
+            </b>
+          </p>
+        }
+         
+        >
       <Table
         aria-label="simple table"
         sx={{
@@ -59,7 +108,7 @@ const ProductPerfomance = ({products}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products && products.map((product) => (
+          {productList && productList.map((product) => (
             <TableRow key={product.slug}>
               <TableCell>
                 <Typography
@@ -68,7 +117,7 @@ const ProductPerfomance = ({products}) => {
                     fontWeight: "500",
                   }}
                 >
-                  {product.title.slice(0,5)+'...'}
+                  {product.title.slice(0,14)+'...'}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -92,7 +141,7 @@ const ProductPerfomance = ({products}) => {
               </TableCell>
               <TableCell>
                 <Typography color="textSecondary" variant="h6">
-                  <img style={{height:'82px'}} src={product.img[0]} alt="product-img" />
+                  <img loading="lazy" style={{height:'82px'}} src={product.img[0]} alt="product-img" />
                 </Typography>
               </TableCell>
               <TableCell>
@@ -112,7 +161,9 @@ const ProductPerfomance = ({products}) => {
           ))}
         </TableBody>
       </Table>
+        </InfiniteScroll>
     </BaseCard>
+  </>
   );
 };
 

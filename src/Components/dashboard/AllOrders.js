@@ -13,14 +13,6 @@ import BaseCard from "../baseCard/BaseCard";
 
 const AllOrders = ({products}) => {
 
-  useEffect(()=>{
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    console.log(products);
-    return () => controller.abort();
-  }, [])
-
   return (
     <BaseCard title="All Orders">
       <Table

@@ -102,6 +102,18 @@ if(admin.email !== users){
 
   return (
     <ThemeProvider theme={theme}>
+       <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
       <FullLayout>
         <style jsx global>{`footer{display:none}`}</style>
         <Grid container spacing={0}>

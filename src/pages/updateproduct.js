@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
 import Error from 'next/error';
+import Image from 'next/image';
 
 const UpdateProduct = ({ product }) => {
     const [products, setProduct] = useState(product);
@@ -77,7 +78,7 @@ const UpdateProduct = ({ product }) => {
         if (res.success) {
             toast.success(res.msg, {
                 position: "top-left",
-                autoClose: 2000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -88,7 +89,7 @@ const UpdateProduct = ({ product }) => {
         } else {
             toast.error(res.msg, {
                 position: "top-left",
-                autoClose: 2000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -208,6 +209,14 @@ const UpdateProduct = ({ product }) => {
                         </div>
                     </div>
                     <button onClick={handleSubmit} className="m-2 mb-5 disabled:bg-orange-200 flex mr-2 text-white bg-orange-500 border-0 py-2 px-3 focus:outline-none hover:bg-orange-600 rounded text-md">Update</button>
+                </section>
+                <section>
+                    <p className='text-center text-lg md:text-2xl m-auto font-semibold mb-10'>Images are shown as per order in Image section</p>
+                    <div className='flex gap-6 m-auto justify-center items-center flex-wrap'>
+                          {image.map((item,index)=>{
+                            return <Image key={index} width={200} height={200} src={item} alt='image'/> 
+                          })}
+                    </div>
                 </section>
             </main>
         </div>

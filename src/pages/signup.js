@@ -55,7 +55,7 @@ function Signup() {
       });
       toast.success('Account Created Successfully', {
         position: "top-left",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -65,7 +65,7 @@ function Signup() {
       });
       setTimeout(() => {
         router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)
-      }, 2500);
+      }, 2000);
     }
   }
 

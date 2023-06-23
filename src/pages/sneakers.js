@@ -30,7 +30,7 @@ function Sneakers({ products, allCount }) {
             </Head>
             <header>
             <div className="flex flex-col mx-14 lg:mx-32">
-                <h1 className="font-semibold m-2 mb-4 text-2xl md:text-4xl text-center capitalize">Explore Our Sticker Collection</h1>
+                <h1 className="font-semibold m-2 mb-4 text-2xl md:text-4xl text-center capitalize">Explore Our Sneaker Collection</h1>
                 <p className="text-sm font-medium dark:text-gray-400 mb-3">
                     Stay stylish with the wide selection of Sneakers available at Shopnation.com. All of our Sneakers are made with high-quality materials and are designed to be comfortable and durable. Shop now and find the perfect Sneaker for you!
                 </p>

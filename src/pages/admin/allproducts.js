@@ -9,7 +9,7 @@ import Product from '../../../models/Product';
 import Error from 'next/error';
 import { useState, useEffect } from 'react';
 
-const AllProducts = ({products}) => {
+const AllProducts = ({products, count}) => {
   const [admin, setAdmin] = useState(null);
   const [users, setUser] = useState(process.env.NEXT_PUBLIC_ADMIN_ID);
 
@@ -33,7 +33,7 @@ if(admin.email !== users){
         <style jsx global>{`footer{display:none}`}</style>
         <Grid container spacing={0}>
           <Grid item xs={12} lg={12}>
-            <ProductPerfomance products={products} />
+            <ProductPerfomance products={products} count={count} />
           </Grid>
         </Grid>
       </FullLayout>
@@ -49,6 +49,7 @@ export async function getServerSideProps(context){
     await mongoose.connect(process.env.MONGO_URI);
   }
   let products = await Product.find();
+  let length = products.length;
 
-  return { props: {products: JSON.parse(JSON.stringify(products))} }
+  return { props: {products: JSON.parse(JSON.stringify(products.slice(0.,9))), count: length} }
 }
